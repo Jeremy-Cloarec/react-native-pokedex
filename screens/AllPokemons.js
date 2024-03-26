@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 
 
-export default function Pokemons() {
+export default function AllPokemons() {
 
     const [isLoading, setLoading] = useState(true);
     const [data, setData] = useState([]);
@@ -12,13 +12,11 @@ export default function Pokemons() {
             const response = await fetch(
                 'https://pokebuildapi.fr/api/v1/pokemon/limit/100',
             );
-            const json = await response.json();
-            setData(json.Pokemons);
-            console.log(json.Pokemons);
-        
+            const data = await response.json();
+            setData(data)
         } catch (error) {
             console.error(error);
-        } finally {
+        }finally {
             setLoading(false);
         }
     };
@@ -27,22 +25,25 @@ export default function Pokemons() {
         getPokemonsFromPokebuild();
     }, []);
 
-
     return (
-        <View style={{ flex: 1, padding: 24 }}>
+        <View>
             {isLoading ? (
                 <ActivityIndicator />
             ) : (
                 <FlatList
                     data={data}
-                    keyExtractor={({ id }) => id}
-                    renderItem={({ item }) => (
-                        <Text>
-                            {item.id}
-                        </Text>
-                    )}
+                    renderItem={({ item }) => {
+                        return (
+                            <View>
+                                <Text>{item.name}</Text>
+                                <Text>Helo</Text>
+
+                            </View>
+                        )
+                    }}
                 />
             )}
         </View>
+       
     )
 }

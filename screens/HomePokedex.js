@@ -32,34 +32,44 @@ export default function HomePokedex({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
+        display: "flex",
         flex: 1,
         backgroundColor: '#191616',
         alignItems: 'center',
         justifyContent: 'center',
         gap: 24,
-        padding: 16
+        padding: 16, 
     },
     containerImageText: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
         gap: 24,
+        width: "100%",
+        padding: "10%",
     },
 
     imageContainer: {
-        padding: 5,
+        width: "100%",
+        minWidth: "100%",
+        width: "100%",
+        flex: 1, 
+        maxWidth: "100%",
+        maxWidth: "100%",
     },
 
     image: {
-        height: 300,
-        width: 350,
-        resizeMode: "contain"
+        minWidth: "100%",
+        width: "100%",
+        flex: 1, 
+        maxWidth: "100%",
+        maxWidth: "100%",
+        resizeMode: "contain",
     },
 
     footerContainer: {
         alignItems: 'center',
         width: '100%',
-        maxWidth: '400px',
         gap: 16,
     },
 });
