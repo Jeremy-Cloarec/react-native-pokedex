@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, Text, View } from 'react-native';
+import {ActivityIndicator, FlatList, Text, View} from 'react-native';
 
 
-export default function Pokemons() {
+export default function AllPokemons() {
 
     const [isLoading, setLoading] = useState(true);
     const [data, setData] = useState([]);
@@ -13,20 +13,15 @@ export default function Pokemons() {
                 'https://pokebuildapi.fr/api/v1/pokemon/limit/100',
             );
             const json = await response.json();
-            setData(json.Pokemons);
-            console.log(json.Pokemons);
-        
+            return json.pokemons;
         } catch (error) {
             console.error(error);
-        } finally {
-            setLoading(false);
         }
     };
 
     useEffect(() => {
         getPokemonsFromPokebuild();
     }, []);
-
 
     return (
         <View style={{ flex: 1, padding: 24 }}>
@@ -38,7 +33,7 @@ export default function Pokemons() {
                     keyExtractor={({ id }) => id}
                     renderItem={({ item }) => (
                         <Text>
-                            {item.id}
+                            {item.title}, {item.releaseYear}
                         </Text>
                     )}
                 />
