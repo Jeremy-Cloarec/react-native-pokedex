@@ -1,10 +1,15 @@
 import { View, Text } from "react-native";
+import { useData } from "../dataContext/contextFetchData";
+
 
 export default function Pokedex() {
+    const { data } = useData();
+
+    console.log(data);
 
     return (
         <View>
-            <Text>Hello Pokedex</Text>
+            <Text>Coucou</Text>
         </View>
     )
 }

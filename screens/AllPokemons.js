@@ -1,30 +1,10 @@
-import { useEffect, useState } from "react";
 import { StyleSheet, ActivityIndicator, FlatList, Text, View, Image } from 'react-native';
-
+import { useData } from "../dataContext/contextFetchData";
 
 
 export default function AllPokemons() {
 
-    const [isLoading, setLoading] = useState(true);
-    const [data, setData] = useState([]);
-
-    const getPokemonsFromPokebuild = async () => {
-        try {
-            const response = await fetch(
-                'https://pokebuildapi.fr/api/v1/pokemon/limit/100',
-            );
-            const data = await response.json();
-            setData(data)
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        getPokemonsFromPokebuild();
-    }, []);
+    const {isLoading, data} = useData()
 
     console.log(data);
 
@@ -33,7 +13,6 @@ export default function AllPokemons() {
             {isLoading ? (
                 <ActivityIndicator />
             ) : (
-
                 <View  style={styles.containerAllPokemons}>
                     <FlatList style={styles.containerAllPokemons2}
                         data={data}
@@ -49,7 +28,6 @@ export default function AllPokemons() {
                         }}
                     />
                 </View>
-
             )}
         </View>
     )
