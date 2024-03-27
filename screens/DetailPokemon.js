@@ -1,8 +1,10 @@
-import React, {useLayoutEffect} from 'react';
-import { StyleSheet, Text, View, Image, Pressable, BackHandler } from 'react-native';
+import React, { useLayoutEffect } from 'react';
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useData } from '../dataContext/contextFetchData';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function DetailPokemon() {
     const { data } = useData();
@@ -11,6 +13,24 @@ export default function DetailPokemon() {
     const navigation = useNavigation();
 
     let pokemon = data[pokemonId - 1];
+
+    const storeData = async (pokemon) => {
+        try {
+            const jsonValue = JSON.stringify(pokemon);
+            await AsyncStorage.setItem('pokemon', jsonValue);
+        } catch (e) {
+            // saving error
+        }
+    };
+
+    const getData = async () => {
+        try {
+          const jsonValue = await AsyncStorage.getItem('pokemon');
+          return jsonValue != null ? JSON.parse(jsonValue) : null;
+        } catch (e) {
+          // error reading value
+        }
+      };
 
     useLayoutEffect(() => {
         navigation.setOptions({ title: pokemon.name });
@@ -43,7 +63,7 @@ const styles = StyleSheet.create({
 
     containerImage: {
         flex: 3,
-        padding: 12,
+        padding: 6,
     },
 
     imageCard: {
@@ -61,8 +81,8 @@ const styles = StyleSheet.create({
     },
     iconAdd: {
         backgroundColor: "rgba(0, 0, 0, 0.1)",
-        paddingVertical: 8,
-        paddingHorizontal: 12,
+        paddingVertical: 6,
+        paddingHorizontal: 10,
         borderRadius: 20,
 
     }
