@@ -1,4 +1,3 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Image } from 'react-native';
 import Button from '../components/ButtonHome';
@@ -46,7 +45,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         gap: 24,
         width: "100%",
-        padding: "10%",
+        marginTop: 24,
     },
 
     imageContainer: {
