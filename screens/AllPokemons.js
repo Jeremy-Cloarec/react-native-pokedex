@@ -1,10 +1,11 @@
-import { StyleSheet, ActivityIndicator, FlatList, Text, View, Image } from 'react-native';
+import { StyleSheet, ActivityIndicator, FlatList, Text, View, Image, Dimensions } from 'react-native';
 import { useData } from "../dataContext/contextFetchData";
 
+const windowWidth = Dimensions.get('window').width;
 
 export default function AllPokemons() {
 
-    const {isLoading, data} = useData()
+    const { isLoading, data } = useData()
 
     console.log(data);
 
@@ -13,21 +14,22 @@ export default function AllPokemons() {
             {isLoading ? (
                 <ActivityIndicator />
             ) : (
-                <View  style={styles.containerAllPokemons}>
-                    <FlatList style={styles.containerAllPokemons2}
-                        data={data}
-                        renderItem={({ item }) => {
-                            return (
-                                <View style={styles.containercard}>
-                                    <View style={styles.containerImage}>
-                                        <Image style={styles.imageCard} source={{ uri: item.image }} />
-                                    </View>
-                                    <Text>{item.name}</Text>
+                <FlatList
+                    data={data}
+                    renderItem={({ item }) => {
+                        return (
+                            <View style={styles.containercard}>
+                                <View style={styles.containerImage}>
+                                    <Image style={styles.imageCard} source={{ uri: item.image }} />
                                 </View>
-                            )
-                        }}
-                    />
-                </View>
+                                <Text>{item.name}</Text>
+                            </View>
+                        )
+                    }}
+                    keyExtractor={(item) => item.id.toString()}
+                    numColumns={2}
+                    contentContainerStyle={styles.containerAllPokemons}
+                />
             )}
         </View>
     )
@@ -37,21 +39,18 @@ const styles = StyleSheet.create({
         backgroundColor: "green",
         padding: 5,
         margin: 5,
-        flexDirection: "row"
-
     },
-    containerAllPokemons2: {
-        backgroundColor: "black",
-        padding: 5,
-        margin: 5,
-        flexDirection: "row",
-        width: ""
 
-    },
     containercard: {
         backgroundColor: "blue",
-        padding: 5,
-        margin:5,
+        margin: 5,
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 10,
+        padding: 10,
+        height: 150, // Adjust this as needed
+        width: (windowWidth - 20) / 2 - 10,
 
     },
     containerImage: {
