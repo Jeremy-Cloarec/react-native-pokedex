@@ -4,6 +4,7 @@ import Home from './screens/HomePokedex';
 import Pokedex from './screens/Pokedex';
 import AllPokemons from './screens/AllPokemons';
 import { DataProvider } from './dataContext/contextFetchData';
+import DetailPokemon from './screens/DetailPokemon';
 
 const Stack = createNativeStackNavigator()
 
@@ -21,7 +22,10 @@ export default function App() {
                     <Stack.Screen
                         name="Pokedex"
                         component={Pokedex}
-                        options={{ exemple: "exemple" }}
+                    />
+                    <Stack.Screen
+                        name="DetailPokemon"
+                        component={DetailPokemon}
                     />
                 </Stack.Navigator>
             </DataProvider>

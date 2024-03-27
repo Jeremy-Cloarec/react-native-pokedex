@@ -1,17 +1,15 @@
-import { StyleSheet, ActivityIndicator, FlatList, Text, View, Image, Dimensions } from 'react-native';
+import { StyleSheet, ActivityIndicator, FlatList, Text, View, Image } from 'react-native';
 import { useData } from "../dataContext/contextFetchData";
-
-const windowDimensions = Dimensions.get('window');
-const screenDimensions = Dimensions.get('screen');
+import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native';
 
 export default function AllPokemons() {
+    const { isLoading, data } = useData();
+    const navigation = useNavigation();
 
-    const windowDimensions = Dimensions.get('window');
-    const screenDimensions = Dimensions.get('screen');
-
-    const { isLoading, data } = useData()
-
-    console.log(data);
+    const handlePokemonPress = (pokemonId) => {
+        navigation.navigate('DetailPokemon', { pokemonId });
+    };
 
     return (
         <View>
@@ -20,16 +18,16 @@ export default function AllPokemons() {
             ) : (
                 <FlatList
                     data={data}
-                    renderItem={({ item }) => {
-                        return (
-                            <View style={styles.containercard}>
-                                <View style={styles.containerImage}>
-                                    <Image style={styles.imageCard} source={{ uri: item.image }} />
-                                </View>
-                                <Text style={styles.textCard}>{item.name}</Text>
+                    renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => handlePokemonPress(item.id)} style={styles.containercard}>
+
+                            <View style={styles.containerImage}>
+                                <Image style={styles.imageCard} source={{ uri: item.image }} />
                             </View>
-                        )
-                    }}
+                            <Text style={styles.textCard}>{item.name}</Text>
+
+                        </TouchableOpacity>
+                    )}
                     keyExtractor={(item) => item.id.toString()}
                     numColumns={2}
                     contentContainerStyle={styles.containerAllPokemons}
