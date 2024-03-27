@@ -12,7 +12,11 @@ export default function App() {
         <NavigationContainer>
             <DataProvider>
                 <Stack.Navigator initialRouteName='="Home'>
-                    <Stack.Screen name="Home" component={Home} />
+                    <Stack.Screen 
+                        name="Home" 
+                        component={Home}
+                        options={{headerShown: false}}
+                    />
                     <Stack.Screen name="Pokemons" component={AllPokemons} />
                     <Stack.Screen
                         name="Pokedex"

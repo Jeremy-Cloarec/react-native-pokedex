@@ -62,7 +62,6 @@ const styles = StyleSheet.create({
         width: "100%",
         flex: 1, 
         maxWidth: "100%",
-        maxWidth: "100%",
         resizeMode: "contain",
     },
 

@@ -1,9 +1,13 @@
 import { StyleSheet, ActivityIndicator, FlatList, Text, View, Image, Dimensions } from 'react-native';
 import { useData } from "../dataContext/contextFetchData";
 
-const windowWidth = Dimensions.get('window').width;
+const windowDimensions = Dimensions.get('window');
+const screenDimensions = Dimensions.get('screen');
 
 export default function AllPokemons() {
+
+    const windowDimensions = Dimensions.get('window');
+    const screenDimensions = Dimensions.get('screen');
 
     const { isLoading, data } = useData()
 
@@ -22,7 +26,7 @@ export default function AllPokemons() {
                                 <View style={styles.containerImage}>
                                     <Image style={styles.imageCard} source={{ uri: item.image }} />
                                 </View>
-                                <Text>{item.name}</Text>
+                                <Text style={styles.textCard}>{item.name}</Text>
                             </View>
                         )
                     }}
@@ -36,32 +40,38 @@ export default function AllPokemons() {
 }
 const styles = StyleSheet.create({
     containerAllPokemons: {
-        backgroundColor: "green",
-        padding: 5,
-        margin: 5,
+        backgroundColor: "#191616",
+        paddingVertical: 18,
+        paddingHorizontal: 10,
     },
 
     containercard: {
-        backgroundColor: "blue",
-        margin: 5,
-        flex: 1,
+        backgroundColor: "white",
+        margin: 8,
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: 10,
-        padding: 10,
-        height: 150, // Adjust this as needed
-        width: (windowWidth - 20) / 2 - 10,
-
+        flex: 1,
+        width: "100%",
+        borderRadius: 18,
+        gap: 8,
+        padding: 6,
     },
+
     containerImage: {
-        backgroundColor: "violet",
-        padding: 5,
+        width: "100%",
+    },
+
+    textCard: {
+        fontWeight: "600",
     },
 
     imageCard: {
-        flexDirection: "row",
-        backgroundColor: "black",
-        width: 50,
-        height: 50,
+        height: 130,
+        borderRadius: 10,
+        padding: 10,
+        resizeMode: "contain",
+        width: "100%",
+        maxWidth: "100%",
+        minWidth: "100%",
     }
 })
