@@ -1,14 +1,70 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import React, {useLayoutEffect} from 'react';
+import { StyleSheet, Text, View, Image, Pressable, BackHandler } from 'react-native';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import { useData } from '../dataContext/contextFetchData';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function DetailPokemon() {
+    const { data } = useData();
     const route = useRoute();
     const { pokemonId } = route.params;
+    const navigation = useNavigation();
+
+    let pokemon = data[pokemonId - 1];
+
+    useLayoutEffect(() => {
+        navigation.setOptions({ title: pokemon.name });
+    }, [navigation, pokemon.name]);
+
     return (
-        <View>
-            <Text>Detail Pokemon Page</Text>
-            <Text>Pokemon ID: {pokemonId}</Text>
+        <View style={styles.containerDetail}>
+            <View style={styles.containerImage}>
+                <Image style={styles.imageCard} source={{ uri: pokemon.image }} />
+            </View>
+            <View style={styles.containerPressable}>
+                <Pressable style={styles.containerIcon}>
+                    <Ionicons
+                        style={styles.iconAdd}
+                        name="add"
+                        size={52}
+                        color="#191616" />
+                    <Text> Ajouter au pokedex</Text>
+                </Pressable>
+            </View>
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+
+    containerDetail: {
+        flex: 1,
+    },
+
+    containerImage: {
+        flex: 3,
+        padding: 12,
+    },
+
+    imageCard: {
+        resizeMode: "contain",
+        flex: 1,
+    },
+    containerPressable: {
+        flex: 1,
+        // alignItems: "center",
+        // justifyContent: "center",
+    },
+    containerIcon: {
+        alignItems: "center",
+        gap: 8,
+    },
+    iconAdd: {
+        backgroundColor: "rgba(0, 0, 0, 0.1)",
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        borderRadius: 20,
+
+    }
+
+})

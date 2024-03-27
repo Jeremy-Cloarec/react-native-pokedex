@@ -20,12 +20,10 @@ export default function AllPokemons() {
                     data={data}
                     renderItem={({ item }) => (
                         <TouchableOpacity onPress={() => handlePokemonPress(item.id)} style={styles.containercard}>
-
                             <View style={styles.containerImage}>
                                 <Image style={styles.imageCard} source={{ uri: item.image }} />
                             </View>
                             <Text style={styles.textCard}>{item.name}</Text>
-
                         </TouchableOpacity>
                     )}
                     keyExtractor={(item) => item.id.toString()}
@@ -44,7 +42,7 @@ const styles = StyleSheet.create({
     },
 
     containercard: {
-        backgroundColor: "white",
+        backgroundColor: "rgba(255, 255, 255, 0.8)",
         margin: 8,
         alignItems: "center",
         justifyContent: "center",
