@@ -13,17 +13,12 @@ export default function DetailPokemon() {
     const navigation = useNavigation();
 
     let pokemon = data[pokemonId - 1];
-    console.log(pokemon);
-
 
     let mergePokemon = async () => {
         try {
-            //save first user
             await AsyncStorage.setItem(pokemon.name, JSON.stringify(pokemon.id))
 
-            const currentPokemon = await AsyncStorage.getItem(pokemon.name)
-
-            console.log(` New pokemon in the local storage:  ${currentPokemon}`)
+            console.log(` New poke in the local storage:  ${pokemon.name}`)
 
         }catch(e){
             console.log("error");
