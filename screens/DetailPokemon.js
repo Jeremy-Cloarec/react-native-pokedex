@@ -13,24 +13,22 @@ export default function DetailPokemon() {
     const navigation = useNavigation();
 
     let pokemon = data[pokemonId - 1];
+    console.log(pokemon);
 
-    const storeData = async (pokemon) => {
-        try {
-            const jsonValue = JSON.stringify(pokemon);
-            await AsyncStorage.setItem('pokemon', jsonValue);
-        } catch (e) {
-            // saving error
-        }
-    };
 
-    const getData = async () => {
+    let mergePokemon = async () => {
         try {
-          const jsonValue = await AsyncStorage.getItem('pokemon');
-          return jsonValue != null ? JSON.parse(jsonValue) : null;
-        } catch (e) {
-          // error reading value
+            //save first user
+            await AsyncStorage.setItem(pokemon.name, JSON.stringify(pokemon.id))
+
+            const currentPokemon = await AsyncStorage.getItem(pokemon.name)
+
+            console.log(` New pokemon in the local storage:  ${currentPokemon}`)
+
+        }catch(e){
+            console.log("error");
         }
-      };
+    }
 
     useLayoutEffect(() => {
         navigation.setOptions({ title: pokemon.name });
@@ -42,7 +40,7 @@ export default function DetailPokemon() {
                 <Image style={styles.imageCard} source={{ uri: pokemon.image }} />
             </View>
             <View style={styles.containerPressable}>
-                <Pressable style={styles.containerIcon}>
+                <Pressable style={styles.containerIcon} onPress={mergePokemon}>
                     <Ionicons
                         style={styles.iconAdd}
                         name="add"
@@ -70,21 +68,21 @@ const styles = StyleSheet.create({
         resizeMode: "contain",
         flex: 1,
     },
+
     containerPressable: {
         flex: 1,
-        // alignItems: "center",
-        // justifyContent: "center",
     },
+
     containerIcon: {
         alignItems: "center",
         gap: 8,
     },
+
     iconAdd: {
         backgroundColor: "rgba(0, 0, 0, 0.1)",
         paddingVertical: 6,
         paddingHorizontal: 10,
         borderRadius: 20,
-
     }
 
 })
