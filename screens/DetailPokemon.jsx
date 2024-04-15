@@ -54,7 +54,7 @@ export default function DetailPokemon() {
                             name="add"
                             size={52}
                             color="#191616" />
-                    </Pressable>) : ("")}
+                    </Pressable>) : (<></>)}
                 <Text style={styles.containerMessage}>{messagAddPokemon}</Text>
             </View>
         </View>

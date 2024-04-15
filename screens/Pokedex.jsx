@@ -2,6 +2,7 @@ import { StyleSheet, View, Text, Pressable, Image, ScrollView } from "react-nati
 import { useData } from "../dataContext/contextFetchData";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState, useCallback } from "react";
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Pokedex() {
     const { data } = useData();
@@ -24,6 +25,12 @@ export default function Pokedex() {
             console.error("Error", error);
         }
     }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            getIdsPokemons();
+        }, [])
+    );
 
     useEffect(() => {
         getIdsPokemons();
