@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         flex: 1,
         borderRadius: 8,
         padding: 6,
-        flexDirection:"row",
+        flexDirection: "row",
         alignItems: "center",
         gap: 16,
     },
