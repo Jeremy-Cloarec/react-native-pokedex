@@ -50,7 +50,6 @@ export default function Pokedex() {
                             id = Number(id) - 1;
                             return (
                                 <View key={data[id].id} style={styles.card}>
-                                    
                                     <Image style={styles.imageCard} source={{ uri: data[id].image }} />
                                     <View>
                                         <Text style={styles.textCard}>{data[id].name}</Text>

@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useData } from '../dataContext/contextFetchData';
@@ -11,16 +11,31 @@ export default function DetailPokemon() {
     const route = useRoute();
     const { pokemonId } = route.params;
     const navigation = useNavigation();
-
+    const [messagAddPokemon, setMessagePokemon] = useState("Ajouter au pokedex");
+    const [checkAdd, setCheckAdd] = useState(false);
     let pokemon = data[pokemonId - 1];
 
-    let mergePokemon = async () => {
+    const checkExistingPokemon = async () => {
+        try {
+            const value = await AsyncStorage.getItem(pokemon.name);
+            if (value !== null) {
+                // We have data!!
+                console.log(value);
+                setMessagePokemon(`Bravo ! ${pokemon.name} est bien dans votre pokedex !`);
+                setCheckAdd(true);
+            }
+        } catch (error) {
+            // Error retrieving data
+        }
+    }
+    checkExistingPokemon()
+
+    const mergePokemon = async () => {
         try {
             await AsyncStorage.setItem(pokemon.name, JSON.stringify(pokemon.id))
-
-            console.log(` New poke in the local storage:  ${pokemon.name}`)
-
-        }catch(e){
+            //setMessagePokemon(`${pokemon.name} a bien été ajouté à votre pokedex`);
+            setCheckAdd(true);
+        } catch (e) {
             console.log("error");
         }
     }
@@ -35,14 +50,16 @@ export default function DetailPokemon() {
                 <Image style={styles.imageCard} source={{ uri: pokemon.image }} />
             </View>
             <View style={styles.containerPressable}>
-                <Pressable style={styles.containerIcon} onPress={mergePokemon}>
-                    <Ionicons
-                        style={styles.iconAdd}
-                        name="add"
-                        size={52}
-                        color="#191616" />
-                    <Text> Ajouter au pokedex</Text>
-                </Pressable>
+                {!checkAdd ? (
+                    <Pressable style={styles.containerIcon} onPress={mergePokemon}>
+                        <Ionicons
+                            style={styles.iconAdd}
+                            name="add"
+                            size={52}
+                            color="#191616" />
+                    </Pressable>) : ("")}
+
+                <Text style={styles.containerMessage}>{messagAddPokemon}</Text>
             </View>
         </View>
     );
@@ -66,11 +83,16 @@ const styles = StyleSheet.create({
 
     containerPressable: {
         flex: 1,
+        alignContent: "center",
+        gap: 8,
     },
 
     containerIcon: {
         alignItems: "center",
-        gap: 8,
+    },
+    containerMessage: {
+        alignItems: "center",
+        textAlign: 'center'
     },
 
     iconAdd: {
@@ -78,6 +100,5 @@ const styles = StyleSheet.create({
         paddingVertical: 6,
         paddingHorizontal: 10,
         borderRadius: 20,
-    }
-
+    },
 })
