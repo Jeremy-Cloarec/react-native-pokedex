@@ -1,10 +1,10 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import { useData } from '../dataContext/contextFetchData';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { useNavigation } from '@react-navigation/native';
 
 export default function DetailPokemon() {
     const { data } = useData();
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     containerIcon: {
         alignItems: "center",
     },
-    
+
     containerMessage: {
         alignItems: "center",
         textAlign: 'center'

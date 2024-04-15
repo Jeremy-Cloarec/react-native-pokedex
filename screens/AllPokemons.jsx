@@ -1,4 +1,4 @@
-import { StyleSheet, ActivityIndicator, FlatList, Text, View, Image, Pressable, ScrollView } from 'react-native';
+import { StyleSheet, ActivityIndicator, FlatList, Text, View, Image, Pressable } from 'react-native';
 import { useData } from "../dataContext/contextFetchData";
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
         marginTop: 50,
     },
 
-    containerAll:{
+    containerAll: {
         backgroundColor: "#191616",
         //alignItems:"center",
     },
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         width: '100%',
         maxWidth: 800,
-        margin:"auto"
+        margin: "auto"
     },
 
     showMore: {
