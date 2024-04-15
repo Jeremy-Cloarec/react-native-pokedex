@@ -1,44 +1,92 @@
-import { StyleSheet, ActivityIndicator, FlatList, Text, View, Image } from 'react-native';
+import { StyleSheet, ActivityIndicator, FlatList, Text, View, Image, Pressable, ScrollView } from 'react-native';
 import { useData } from "../dataContext/contextFetchData";
 import { useNavigation } from '@react-navigation/native';
-import { TouchableOpacity } from 'react-native';
+import { useState } from 'react';
 
 export default function AllPokemons() {
-    const { isLoading, data } = useData();
+    const { isLoading, data, numberItem, setNumberItem } = useData();
     const navigation = useNavigation();
+
+    const [messageFetchMore, setMessageFetchMore] = useState("Afficher plus")
 
     const handlePokemonPress = (pokemonId) => {
         navigation.navigate('DetailPokemon', { pokemonId });
     };
 
+    const showMore = () => {
+        if (numberItem <= 898) {
+            setNumberItem(numberItem + 60)
+        } else {
+            setMessageFetchMore("Vous êtes à la fin de la liste")
+        }
+    }
+
+    console.log("Number of items:", numberItem);  // Mettez ce log ici pour voir la nouvelle valeur
+
     return (
         <View>
-            {isLoading ? (
-                <ActivityIndicator />
+            {numberItem <= 120 && isLoading ? (
+                <ActivityIndicator style={styles.loaderStyle} />
             ) : (
-                <FlatList
-                    data={data}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity onPress={() => handlePokemonPress(item.id)} style={styles.containercard}>
-                            <View style={styles.containerImage}>
-                                <Image style={styles.imageCard} source={{ uri: item.image }} />
-                            </View>
-                            <Text style={styles.textCard}>{item.name}</Text>
-                        </TouchableOpacity>
-                    )}
-                    keyExtractor={(item) => item.id.toString()}
-                    numColumns={2}
-                    contentContainerStyle={styles.containerAllPokemons}
-                />
+                <View style={styles.containerAll}>
+                    <FlatList
+                        data={data}
+                        renderItem={({ item }) => (
+                            <Pressable onPress={() => handlePokemonPress(item.id)} style={styles.containercard}>
+                                <View style={styles.containerImage}>
+                                    <Image style={styles.imageCard} source={{ uri: item.image }} />
+                                </View>
+                                <Text style={styles.textCard}>{item.name}</Text>
+                            </Pressable>
+                        )}
+                        keyExtractor={(item) => item.id.toString()}
+                        numColumns={2}
+                        contentContainerStyle={styles.containerAllPokemons}
+                        ListFooterComponent={() => (
+                            <>
+                                {numberItem >= 10 && isLoading ? (
+                                    <ActivityIndicator style={styles.loaderStyle} />
+                                ) : (
+                                    <Pressable onPress={showMore} style={styles.showMore}>
+                                        <Text style={styles.showMoreTexte}>{messageFetchMore}</Text>
+                                    </Pressable>
+                                )}
+                            </>
+                        )}
+                    />
+                </View>
             )}
         </View>
     )
 }
 const styles = StyleSheet.create({
-    containerAllPokemons: {
+    loaderStyle: {
+        marginBottom: 50,
+        marginTop: 50,
+    },
+
+    containerAll:{
         backgroundColor: "#191616",
+        //alignItems:"center",
+    },
+    containerAllPokemons: {
         paddingVertical: 18,
         paddingHorizontal: 10,
+        width: '100%',
+        maxWidth: 800,
+        margin:"auto"
+    },
+
+    showMore: {
+        marginBottom: 50,
+        marginTop: 50,
+        textAlign: "center",
+        alignItems: "center",
+        margin: "auto"
+    },
+
+    showMoreTexte: {
+        color: "white"
     },
 
     containercard: {

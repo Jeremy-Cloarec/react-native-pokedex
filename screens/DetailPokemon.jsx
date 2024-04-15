@@ -19,8 +19,6 @@ export default function DetailPokemon() {
         try {
             const value = await AsyncStorage.getItem(pokemon.name);
             if (value !== null) {
-                // We have data!!
-                console.log(value);
                 setMessagePokemon(`Bravo ! ${pokemon.name} est bien dans votre pokedex !`);
                 setCheckAdd(true);
             }
@@ -33,7 +31,6 @@ export default function DetailPokemon() {
     const mergePokemon = async () => {
         try {
             await AsyncStorage.setItem(pokemon.name, JSON.stringify(pokemon.id))
-            //setMessagePokemon(`${pokemon.name} a bien été ajouté à votre pokedex`);
             setCheckAdd(true);
         } catch (e) {
             console.log("error");
@@ -89,6 +86,7 @@ const styles = StyleSheet.create({
     containerIcon: {
         alignItems: "center",
     },
+    
     containerMessage: {
         alignItems: "center",
         textAlign: 'center'
