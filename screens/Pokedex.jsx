@@ -1,5 +1,4 @@
 import { StyleSheet, View, Text, Pressable, Image, ScrollView } from "react-native";
-import { useData } from "../dataContext/contextFetchData";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState, useCallback } from "react";
 import { useFocusEffect } from '@react-navigation/native';

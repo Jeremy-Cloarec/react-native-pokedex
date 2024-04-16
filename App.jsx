@@ -25,11 +25,34 @@ export default function App() {
     return (
         <NavigationContainer>
             <DataProvider>
-                <Tab.Navigator initialRouteName='Pokemons'>
+                <Tab.Navigator
+                    initialRouteName='Pokemons'
+                    screenOptions={{
+                        tabBarActiveTintColor: '#e91e63',
+                        tabBarInactiveTintColor: 'black',
+                        tabBarStyle: {
+                         
+                                position: 'relative',
+                                bottom: 0,
+                                maxWidth: '100%',
+                                height: 60,
+                                backgroundColor: 'rgba(255, 255, 255, 1)',
+                                flexDirection: 'row',
+                                justifyContent: 'space-around',
+                                alignItems: 'center',
+                            },
+                            tabBarLabelStyle: {
+                                fontSize: 16,
+                                fontWeight: 'bold',
+
+                            },
+                            
+                        }
+                    } >
                     <Tab.Screen name="Pokemons" component={PokemonStack} options={{ headerShown: false }} />
                     <Tab.Screen name="Pokedex" component={Pokedex} options={{ headerShown: false }} />
                 </Tab.Navigator>
-            </DataProvider>
-        </NavigationContainer>
+        </DataProvider>
+        </NavigationContainer >
     );
 }
