@@ -30,12 +30,13 @@ export default function DetailPokemon() {
 
     const mergePokemon = async () => {
         try {
-            await AsyncStorage.setItem(pokemon.name, JSON.stringify(pokemon.id))
+            await AsyncStorage.setItem(pokemon.name, JSON.stringify(pokemon));
             setCheckAdd(true);
         } catch (e) {
-            console.log("error");
+            console.log("error", e);
         }
     }
+
 
     useLayoutEffect(() => {
         navigation.setOptions({ title: pokemon.name });

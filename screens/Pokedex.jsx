@@ -5,26 +5,35 @@ import { useEffect, useState, useCallback } from "react";
 import { useFocusEffect } from '@react-navigation/native';
 
 export default function Pokedex() {
-    const { data } = useData();
-    const [arrayIdPokemons, setArrayIdPokemons] = useState([]);
+
+    const [values, setValues] = useState([])
+    const [keys, setKeys] = useState([])
 
     const getIdsPokemons = useCallback(async () => {
         try {
             const keys = await AsyncStorage.getAllKeys();
-            console.log(keys);
+            setKeys(keys);
+
             const values = await AsyncStorage.multiGet(keys);
-            console.log(values);
+            const parsedValues = values
+                .filter((item) => {
+                    try {
+                        JSON.parse(item[1]);
+                        return true;
+                    } catch (e) {
+                        return false;
+                    }
+                })
+                .map((item) => JSON.parse(item[1]));
 
-            let arrayPokemon = values
-                .map(arrayPokemon => arrayPokemon[1])
-                .filter(id => !isNaN(Number(id)));
-
-            setArrayIdPokemons(arrayPokemon);
-
+            setValues(parsedValues);
         } catch (error) {
             console.error("Error", error);
         }
     }, []);
+
+    console.log(values);
+    console.log(keys);
 
     useFocusEffect(
         useCallback(() => {
@@ -39,7 +48,7 @@ export default function Pokedex() {
     const clearAll = async () => {
         try {
             await AsyncStorage.clear();
-            setArrayIdPokemons([]);
+            setValues([]);
         } catch (error) {
             console.error("Error", error);
         }
@@ -54,11 +63,9 @@ export default function Pokedex() {
         }
     };
 
-    console.log(arrayIdPokemons);
-
     return (
         <ScrollView style={styles.containerAllPokemons}>
-            {arrayIdPokemons.length === 0 ? (
+            {values.length === 0 ? (
                 <Text>Vous n'avez pas encore de pokemon dans votre pokedex</Text>
             ) : (
                 <>
@@ -66,23 +73,22 @@ export default function Pokedex() {
                         <Text>Supprimer tous les pokemons</Text>
                     </Pressable>
                     <View style={styles.containerCard}>
-                        {arrayIdPokemons.map(id => {
-                            id = Number(id) - 1;
+                        {values.map(pokemon => {
                             return (
-                                <View key={data[id].id} style={styles.card}>
+                                <View key={pokemon.id} style={styles.card}>
                                     <View style={styles.cardText}>
-                                        <Image style={styles.imageCard} source={{ uri: data[id].image }} />
+                                        <Image style={styles.imageCard} source={{ uri: pokemon.image }} />
                                         <View>
-                                            <Text style={styles.textCard}>{data[id].name}</Text>
+                                            <Text style={styles.textCard}>{values.name}</Text>
                                             <View style={styles.containerTypes}>
                                                 <Text>Types :</Text>
-                                                {data[id].apiTypes.map((type, id) => (
+                                                {pokemon.apiTypes.map((type, id) => (
                                                     <Text key={id}>{type.name}</Text>
                                                 ))}
                                             </View>
                                         </View>
                                     </View>
-                                    <Pressable style={styles.pressable} onPress={() => clearOne(data[id].name)}>
+                                    <Pressable style={styles.pressable} onPress={() => clearOne(pokemon.name)}>
                                         <Text>❌</Text>
                                     </Pressable>
                                 </View>
@@ -140,4 +146,4 @@ const styles = StyleSheet.create({
         height: 130,
         width: 130,
     }
-})
+});
