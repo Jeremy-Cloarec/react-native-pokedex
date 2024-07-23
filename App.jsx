@@ -2,11 +2,10 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-import Home from './screens/HomePokedex';
+import { DataProvider } from './dataContext/contextFetchData';
+import { SafeAreaProvider} from 'react-native-safe-area-context';
 import Pokedex from './screens/Pokedex';
 import AllPokemons from './screens/AllPokemons';
-import { DataProvider } from './dataContext/contextFetchData';
 import DetailPokemon from './screens/DetailPokemon';
 
 const Tab = createBottomTabNavigator();
@@ -23,15 +22,15 @@ function PokemonStack() {
 
 export default function App() {
     return (
-        <NavigationContainer>
-            <DataProvider>
-                <Tab.Navigator
-                    initialRouteName='Pokemons'
-                    screenOptions={{
-                        tabBarActiveTintColor: '#e91e63',
-                        tabBarInactiveTintColor: 'black',
-                        tabBarStyle: {
-                         
+        <SafeAreaProvider>
+            <NavigationContainer>
+                <DataProvider>
+                    <Tab.Navigator
+                        initialRouteName='Pokemons'
+                        screenOptions={{
+                            tabBarActiveTintColor: '#e91e63',
+                            tabBarInactiveTintColor: 'black',
+                            tabBarStyle: {
                                 position: 'relative',
                                 bottom: 0,
                                 maxWidth: '100%',
@@ -44,15 +43,14 @@ export default function App() {
                             tabBarLabelStyle: {
                                 fontSize: 16,
                                 fontWeight: 'bold',
-
                             },
-                            
                         }
-                    } >
-                    <Tab.Screen name="Pokemons" component={PokemonStack} options={{ headerShown: false }} />
-                    <Tab.Screen name="Pokedex" component={Pokedex} options={{ headerShown: false }} />
-                </Tab.Navigator>
-        </DataProvider>
-        </NavigationContainer >
+                        } >
+                        <Tab.Screen name="Pokemons" component={PokemonStack} options={{ headerShown: false }} />
+                        <Tab.Screen name="Pokedex" component={Pokedex} options={{ headerShown: false }} />
+                    </Tab.Navigator>
+                </DataProvider>
+            </NavigationContainer >
+        </SafeAreaProvider>
     );
 }

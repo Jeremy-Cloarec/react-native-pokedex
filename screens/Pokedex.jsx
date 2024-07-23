@@ -2,11 +2,13 @@ import { StyleSheet, View, Text, Pressable, Image, ScrollView } from "react-nati
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState, useCallback } from "react";
 import { useFocusEffect } from '@react-navigation/native';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Pokedex() {
+    const insets = useSafeAreaInsets();
 
-    const [values, setValues] = useState([])
-    const [keys, setKeys] = useState([])
+    const [values, setValues] = useState([]);
+    const [keys, setKeys] = useState([]);
 
     const getIdsPokemons = useCallback(async () => {
         try {
@@ -63,7 +65,14 @@ export default function Pokedex() {
     };
 
     return (
-        <ScrollView style={styles.containerAllPokemons}>
+        <ScrollView style={[{
+            flex:1,
+            flex: 1,
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom,
+            paddingLeft: insets.left,
+            paddingRight: insets.right,
+        } ,styles.containerAllPokemons]}>
             {values.length === 0 ? (
                 <Text>Vous n'avez pas encore de pokemon dans votre pokedex</Text>
             ) : (

@@ -2,8 +2,10 @@ import { StyleSheet, ActivityIndicator, Text, View, Image, Pressable, ScrollView
 import { useData } from "../dataContext/contextFetchData";
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function AllPokemons() {
+    const insets = useSafeAreaInsets();
     const { isLoading, data, numberItem, setNumberItem } = useData();
     const navigation = useNavigation();
 
@@ -24,7 +26,13 @@ export default function AllPokemons() {
     console.log("Number of items:", numberItem);
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={{
+            flex: 1,
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom,
+            paddingLeft: insets.left,
+            paddingRight: insets.right,
+        }}>
             {numberItem <= 120 && isLoading ? (
                 <ActivityIndicator style={styles.loaderStyle} />
             ) : (
@@ -57,7 +65,7 @@ const styles = StyleSheet.create({
     loaderStyle: {
         marginBottom: 50,
         marginTop: 50,
-        minWidth:'100%'
+        minWidth: '100%'
     },
 
     containerAll: {
@@ -75,7 +83,7 @@ const styles = StyleSheet.create({
         marginTop: 50,
         textAlign: "center",
         alignItems: "center",
-        minWidth:'100%'
+        minWidth: '100%'
     },
 
     showMoreTexte: {
@@ -88,7 +96,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         flex: 1,
-        minWidth:'40%',
+        minWidth: '40%',
         borderRadius: 18,
         gap: 8,
         padding: 6,
