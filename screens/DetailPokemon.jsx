@@ -26,6 +26,7 @@ export default function DetailPokemon() {
             // Error retrieving data
         }
     }
+    
     checkExistingPokemon()
 
     const mergePokemon = async () => {
@@ -36,7 +37,6 @@ export default function DetailPokemon() {
             console.log("error", e);
         }
     }
-
 
     useLayoutEffect(() => {
         navigation.setOptions({ title: pokemon.name });

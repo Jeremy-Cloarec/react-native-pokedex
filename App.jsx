@@ -7,6 +7,7 @@ import { SafeAreaProvider} from 'react-native-safe-area-context';
 import Pokedex from './screens/Pokedex';
 import AllPokemons from './screens/AllPokemons';
 import DetailPokemon from './screens/DetailPokemon';
+import MapPokemons from './screens/MapPokemons';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -26,7 +27,7 @@ export default function App() {
             <NavigationContainer>
                 <DataProvider>
                     <Tab.Navigator
-                        initialRouteName='Pokemons'
+                        initialRouteName='Map'
                         screenOptions={{
                             tabBarActiveTintColor: '#e91e63',
                             tabBarInactiveTintColor: 'black',
@@ -46,6 +47,7 @@ export default function App() {
                             },
                         }
                         } >
+                        <Tab.Screen name="Map" component={MapPokemons} options={{ headerShown: false }} />
                         <Tab.Screen name="Pokemons" component={PokemonStack} options={{ headerShown: false }} />
                         <Tab.Screen name="Pokedex" component={Pokedex} options={{ headerShown: false }} />
                     </Tab.Navigator>

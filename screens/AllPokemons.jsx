@@ -26,12 +26,12 @@ export default function AllPokemons() {
     console.log("Number of items:", numberItem);
 
     return (
-        <ScrollView style={{
-            flex: 1,
+        <ScrollView contentContainerStyle={{
             paddingTop: insets.top,
             paddingBottom: insets.bottom,
             paddingLeft: insets.left,
             paddingRight: insets.right,
+            flexGrow: 1,
         }}>
             {numberItem <= 120 && isLoading ? (
                 <ActivityIndicator style={styles.loaderStyle} />
