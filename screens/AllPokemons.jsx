@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+
 export default function AllPokemons() {
     const insets = useSafeAreaInsets();
     const { isLoading, data, numberItem, setNumberItem } = useData();
