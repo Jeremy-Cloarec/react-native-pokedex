@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState } from 'react';
-
 import { useEffect } from 'react';
 
 const DataContext = createContext();
@@ -12,9 +11,8 @@ export const DataProvider = ({ children }) => {
     const [numberItem, setNumberItem] = useState(120);
 
     const getPokemonsFromPokebuild = async () => {
-
         try {
-            setLoading(true); 
+            setLoading(true);
             const response = await fetch(
                 `https://pokebuildapi.fr/api/v1/pokemon/limit/${numberItem}`,
             );
@@ -31,7 +29,7 @@ export const DataProvider = ({ children }) => {
     }, [numberItem]);
 
     return (
-        <DataContext.Provider value={{ isLoading, data, numberItem, setNumberItem }}>
+        <DataContext.Provider value={{ isLoading, setLoading, data, setData, numberItem, setNumberItem }}>
             {children}
         </DataContext.Provider>
     );

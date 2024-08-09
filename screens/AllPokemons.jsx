@@ -1,20 +1,41 @@
 import { StyleSheet, ActivityIndicator, Text, View, Image, Pressable, ScrollView } from 'react-native';
 import { useData } from "../dataContext/contextFetchData";
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
+import { SearchPokemons } from '../components/SearchPokemons';
 
 export default function AllPokemons() {
+    const [text, onChangeText] = useState('');
     const insets = useSafeAreaInsets();
-    const { isLoading, data, numberItem, setNumberItem } = useData();
+    const { isLoading, setLoading, data, setData, numberItem, setNumberItem } = useData();
     const navigation = useNavigation();
-
-    const [messageFetchMore, setMessageFetchMore] = useState("Afficher plus")
+    const [messageFetchMore, setMessageFetchMore] = useState("Afficher plus");
 
     const handlePokemonPress = (pokemonId) => {
         navigation.navigate('DetailPokemon', { pokemonId });
     };
+
+    async function handleInputPress(text) {
+        setLoading(true); 
+        try {
+            const response = await fetch(
+                `https://pokebuildapi.fr/api/v1/pokemon/${text}`,
+            );
+            const jsonData = await response.json();
+            console.log(jsonData);
+
+            setData([jsonData])
+        } catch (error) {
+            console.error(error);
+        } finally{
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        console.log("Data has been updated:", data);
+    }, [data]);
 
     const showMore = () => {
         if (numberItem <= 898) {
@@ -23,8 +44,6 @@ export default function AllPokemons() {
             setMessageFetchMore("Vous êtes à la fin de la liste")
         }
     }
-
-    console.log("Number of items:", numberItem);
 
     return (
         <ScrollView contentContainerStyle={{
@@ -37,25 +56,32 @@ export default function AllPokemons() {
             {numberItem <= 120 && isLoading ? (
                 <ActivityIndicator style={styles.loaderStyle} />
             ) : (
-                <View style={styles.containerAll}>
-                    {data.map((item) => (
-                        <Pressable key={item.id} onPress={() => handlePokemonPress(item.id)} style={styles.containercard}>
-                            <View style={styles.containerImage}>
-                                <Image style={styles.imageCard} source={{ uri: item.image }} />
-                            </View>
-                            <Text style={styles.textCard}>{item.name}</Text>
-                        </Pressable>
-                    ))}
+                <>
+                    <SearchPokemons
+                        onChangeText={onChangeText}
+                        text={text}
+                        handleInputPressed={() => handleInputPress(text)}
+                    />
+                    <View style={styles.containerAll}>
+                        {data.map((item) => (
+                            <Pressable key={item.id} onPress={() => handlePokemonPress(item.id)} style={styles.containercard}>
+                                <View style={styles.containerImage}>
+                                    <Image style={styles.imageCard} source={{ uri: item.image }} />
+                                </View>
+                                <Text style={styles.textCard}>{item.name}</Text>
+                            </Pressable>
+                        ))}
 
 
-                    {numberItem >= 10 && isLoading ? (
-                        <ActivityIndicator style={styles.loaderStyle} />
-                    ) : (
-                        <Pressable onPress={showMore} style={styles.showMore}>
-                            <Text style={styles.showMoreTexte}>{messageFetchMore}</Text>
-                        </Pressable>
-                    )}
-                </View>
+                        {numberItem >= 10 && isLoading ? (
+                            <ActivityIndicator style={styles.loaderStyle} />
+                        ) : (
+                            <Pressable onPress={showMore} style={styles.showMore}>
+                                <Text style={styles.showMoreTexte}>{messageFetchMore}</Text>
+                            </Pressable>
+                        )}
+                    </View>
+                </>
             )}
         </ScrollView>
     )
@@ -70,13 +96,12 @@ const styles = StyleSheet.create({
     },
 
     containerAll: {
-        paddingVertical: 18,
-        paddingHorizontal: 10,
-        maxWidth: 800,
-        margin: "auto",
+        paddingVertical: 0,
+        paddingHorizontal: 5,
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
+        width: '100%'
     },
 
     showMore: {
