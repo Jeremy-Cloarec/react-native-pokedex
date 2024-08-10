@@ -3,7 +3,8 @@ import { useData } from "../dataContext/contextFetchData";
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SearchPokemons } from '../components/SearchPokemons';
+import { SearchPokemons } from '../components/InputSearchPokemons';
+import { ButtonAfterList } from '../components/ButtonAfterList';
 
 export default function AllPokemons() {
     const [text, onChangeText] = useState('');
@@ -11,31 +12,41 @@ export default function AllPokemons() {
     const { isLoading, setLoading, data, setData, numberItem, setNumberItem } = useData();
     const navigation = useNavigation();
     const [messageFetchMore, setMessageFetchMore] = useState("Afficher plus");
+    const [searchPokemon, setSearchPokemon] = useState(false);
 
     const handlePokemonPress = (pokemonId) => {
         navigation.navigate('DetailPokemon', { pokemonId });
     };
 
     async function handleInputPress(text) {
-        setLoading(true); 
+        setLoading(true);
         try {
             const response = await fetch(
                 `https://pokebuildapi.fr/api/v1/pokemon/${text}`,
             );
             const jsonData = await response.json();
             console.log(jsonData);
-
             setData([jsonData])
+            setSearchPokemon(true)
         } catch (error) {
             console.error(error);
-        } finally{
+        } finally {
             setLoading(false);
         }
     };
 
+    const backToList = () => {
+        setSearchPokemon(false)
+        setData(data)
+    }
+
     useEffect(() => {
         console.log("Data has been updated:", data);
     }, [data]);
+
+    useEffect(() => {
+        console.log("Set search Pokemon:", searchPokemon);
+    }, [searchPokemon]);
 
     const showMore = () => {
         if (numberItem <= 898) {
@@ -70,15 +81,24 @@ export default function AllPokemons() {
                                 </View>
                                 <Text style={styles.textCard}>{item.name}</Text>
                             </Pressable>
-                        ))}
+                        ))
+                        }
 
+                        {
+                            searchPokemon &&
+                            <ButtonAfterList
+                                text="Retourner à la liste"
+                                onPress={backToList}
+                            />
+                        }
 
                         {numberItem >= 10 && isLoading ? (
                             <ActivityIndicator style={styles.loaderStyle} />
                         ) : (
-                            <Pressable onPress={showMore} style={styles.showMore}>
-                                <Text style={styles.showMoreTexte}>{messageFetchMore}</Text>
-                            </Pressable>
+                            <ButtonAfterList
+                                text={messageFetchMore}
+                                onPress={showMore}
+                            />
                         )}
                     </View>
                 </>
@@ -102,14 +122,6 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'space-between',
         width: '100%'
-    },
-
-    showMore: {
-        marginBottom: 50,
-        marginTop: 50,
-        textAlign: "center",
-        alignItems: "center",
-        minWidth: '100%'
     },
 
     showMoreTexte: {
