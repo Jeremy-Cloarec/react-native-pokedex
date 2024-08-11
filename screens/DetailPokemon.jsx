@@ -1,19 +1,51 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import { useData } from '../dataContext/contextFetchData';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
 export default function DetailPokemon() {
-    const { data } = useData();
+    const [pokemon, setPokemon] = useState({});
     const route = useRoute();
-    const { pokemonId } = route.params;
+    const { pokemonName } = route.params;
     const navigation = useNavigation();
     const [messagAddPokemon, setMessagePokemon] = useState("Ajouter au pokedex");
     const [checkAdd, setCheckAdd] = useState(false);
-    let pokemon = data[pokemonId - 1];
+    const [error, setError] = useState(null);
+
+    async function fetchOnePokemon(pokemonName) {
+        // setLoading(true);
+        try {
+            const response = await fetch(
+                `https://pokebuildapi.fr/api/v1/pokemon/${(pokemonName)}`,
+            );
+            const jsonData = await response.json();
+            setPokemon(jsonData);
+            setError(null);
+
+        } catch (error) {
+            console.error(error);
+            setError('Pokemon non trouvé')
+        } finally {
+            // setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (pokemonName) {
+            fetchOnePokemon(pokemonName);
+        }
+    }, [pokemonName]);
+
+    useEffect(() => {
+        if (pokemon && pokemon.name) {
+            checkExistingPokemon();
+            navigation.setOptions({ title: pokemon.name });
+        } else {
+            navigation.setOptions({ title: "Retour" });
+        }
+    }, [pokemon]);
 
     const checkExistingPokemon = async () => {
         try {
@@ -23,11 +55,9 @@ export default function DetailPokemon() {
                 setCheckAdd(true);
             }
         } catch (error) {
-            // Error retrieving data
+            console.log("error", error);
         }
     }
-    
-    checkExistingPokemon()
 
     const mergePokemon = async () => {
         try {
@@ -38,26 +68,27 @@ export default function DetailPokemon() {
         }
     }
 
-    useLayoutEffect(() => {
-        navigation.setOptions({ title: pokemon.name });
-    }, [navigation, pokemon.name]);
-
     return (
         <View style={styles.containerDetail}>
-            <View style={styles.containerImage}>
-                <Image style={styles.imageCard} source={{ uri: pokemon.image }} />
-            </View>
-            <View style={styles.containerPressable}>
-                {!checkAdd ? (
-                    <Pressable style={styles.containerIcon} onPress={mergePokemon}>
-                        <Ionicons
-                            style={styles.iconAdd}
-                            name="add"
-                            size={52}
-                            color="#191616" />
-                    </Pressable>) : (<></>)}
-                <Text style={styles.containerMessage}>{messagAddPokemon}</Text>
-            </View>
+            {error ? <Text>{error}</Text> : (
+                <>
+                    <View style={styles.containerImage}>
+                        <Image style={styles.imageCard} source={{ uri: pokemon.image }} />
+                    </View>
+                    <View style={styles.containerPressable}>
+                        {!checkAdd ? (
+                            <Pressable style={styles.containerIcon} onPress={mergePokemon}>
+                                <Ionicons
+                                    style={styles.iconAdd}
+                                    name="add"
+                                    size={52}
+                                    color="#191616" />
+                            </Pressable>) : (<></>)}
+                        <Text style={styles.containerMessage}>{messagAddPokemon}</Text>
+                    </View>
+                </>
+            )}
+
         </View>
     );
 }

@@ -7,46 +7,23 @@ import { SearchPokemons } from '../components/InputSearchPokemons';
 import { ButtonAfterList } from '../components/ButtonAfterList';
 
 export default function AllPokemons() {
-    const [text, onChangeText] = useState('');
+    const [namePokemon, setNamePokemon] = useState('');
     const insets = useSafeAreaInsets();
-    const { isLoading, setLoading, data, setData, numberItem, setNumberItem } = useData();
+    const { isLoading, setLoading, data, setData, numberItem, setNumberItem, originalData, setOriginalData } = useData();
     const navigation = useNavigation();
     const [messageFetchMore, setMessageFetchMore] = useState("Afficher plus");
     const [searchPokemon, setSearchPokemon] = useState(false);
+    const [error, setError] = useState(null);
 
-    const handlePokemonPress = (pokemonId) => {
-        navigation.navigate('DetailPokemon', { pokemonId });
+    const handlePokemonPress = (pokemonName) => {
+        navigation.navigate('DetailPokemon', { pokemonName });
     };
 
-    async function handleInputPress(text) {
-        setLoading(true);
-        try {
-            const response = await fetch(
-                `https://pokebuildapi.fr/api/v1/pokemon/${text}`,
-            );
-            const jsonData = await response.json();
-            console.log(jsonData);
-            setData([jsonData])
-            setSearchPokemon(true)
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const backToList = () => {
-        setSearchPokemon(false)
-        setData(data)
+    const handlePokemonSearch = (pokemonName) => {        
+        navigation.navigate('DetailPokemon', { 
+            pokemonName : pokemonName 
+        });
     }
-
-    useEffect(() => {
-        console.log("Data has been updated:", data);
-    }, [data]);
-
-    useEffect(() => {
-        console.log("Set search Pokemon:", searchPokemon);
-    }, [searchPokemon]);
 
     const showMore = () => {
         if (numberItem <= 898) {
@@ -69,13 +46,14 @@ export default function AllPokemons() {
             ) : (
                 <>
                     <SearchPokemons
-                        onChangeText={onChangeText}
-                        text={text}
-                        handleInputPressed={() => handleInputPress(text)}
+                        onChangeText={setNamePokemon}
+                        text={namePokemon}
+                        handleInputPressed={() => handlePokemonSearch(namePokemon)}
                     />
+                    {error && <Text>{error}</Text>}
                     <View style={styles.containerAll}>
                         {data.map((item) => (
-                            <Pressable key={item.id} onPress={() => handlePokemonPress(item.id)} style={styles.containercard}>
+                            <Pressable key={item.id} onPress={() => handlePokemonPress(item.name)} style={styles.containercard}>
                                 <View style={styles.containerImage}>
                                     <Image style={styles.imageCard} source={{ uri: item.image }} />
                                 </View>
@@ -83,15 +61,6 @@ export default function AllPokemons() {
                             </Pressable>
                         ))
                         }
-
-                        {
-                            searchPokemon &&
-                            <ButtonAfterList
-                                text="Retourner à la liste"
-                                onPress={backToList}
-                            />
-                        }
-
                         {numberItem >= 10 && isLoading ? (
                             <ActivityIndicator style={styles.loaderStyle} />
                         ) : (

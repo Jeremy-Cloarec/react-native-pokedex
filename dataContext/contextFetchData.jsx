@@ -8,6 +8,7 @@ export const useData = () => useContext(DataContext);
 export const DataProvider = ({ children }) => {
     const [isLoading, setLoading] = useState(true);
     const [data, setData] = useState([]);
+    const [originalData, setOriginalData] = useState([]);
     const [numberItem, setNumberItem] = useState(120);
 
     const getPokemonsFromPokebuild = async () => {
@@ -17,19 +18,22 @@ export const DataProvider = ({ children }) => {
                 `https://pokebuildapi.fr/api/v1/pokemon/limit/${numberItem}`,
             );
             const jsonData = await response.json();
-            setData(jsonData)
+            setData(jsonData);
+            setOriginalData(jsonData);
+
         } catch (error) {
             console.error(error);
         } finally {
             setLoading(false);
         }
     };
+
     useEffect(() => {
         getPokemonsFromPokebuild();
     }, [numberItem]);
 
     return (
-        <DataContext.Provider value={{ isLoading, setLoading, data, setData, numberItem, setNumberItem }}>
+        <DataContext.Provider value={{ isLoading, setLoading, data, setData, numberItem, setNumberItem, originalData, setOriginalData }}>
             {children}
         </DataContext.Provider>
     );
