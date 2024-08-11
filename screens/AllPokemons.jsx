@@ -3,8 +3,9 @@ import { useData } from "../dataContext/contextFetchData";
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SearchPokemons } from '../components/InputSearchPokemons';
+import { InputSearchPokemons } from '../components/InputSearchPokemons';
 import { ButtonAfterList } from '../components/ButtonAfterList';
+import Filter from '../components/Filter';
 
 export default function AllPokemons() {
     const [namePokemon, setNamePokemon] = useState('');
@@ -13,15 +14,14 @@ export default function AllPokemons() {
     const navigation = useNavigation();
     const [messageFetchMore, setMessageFetchMore] = useState("Afficher plus");
     const [searchPokemon, setSearchPokemon] = useState(false);
-    const [error, setError] = useState(null);
 
     const handlePokemonPress = (pokemonName) => {
         navigation.navigate('DetailPokemon', { pokemonName });
     };
 
-    const handlePokemonSearch = (pokemonName) => {        
-        navigation.navigate('DetailPokemon', { 
-            pokemonName : pokemonName 
+    const handlePokemonSearch = (pokemonName) => {
+        navigation.navigate('DetailPokemon', {
+            pokemonName: pokemonName
         });
     }
 
@@ -45,12 +45,14 @@ export default function AllPokemons() {
                 <ActivityIndicator style={styles.loaderStyle} />
             ) : (
                 <>
-                    <SearchPokemons
-                        onChangeText={setNamePokemon}
-                        text={namePokemon}
-                        handleInputPressed={() => handlePokemonSearch(namePokemon)}
-                    />
-                    {error && <Text>{error}</Text>}
+                    <View style={styles.containerSearchFilter}>  
+                        <InputSearchPokemons
+                            onChangeText={setNamePokemon}
+                            text={namePokemon}
+                            handleInputPressed={()=> handlePokemonSearch(namePokemon)}
+                        />
+                        <Filter />
+                    </View>
                     <View style={styles.containerAll}>
                         {data.map((item) => (
                             <Pressable key={item.id} onPress={() => handlePokemonPress(item.name)} style={styles.containercard}>
@@ -91,6 +93,13 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'space-between',
         width: '100%'
+    },
+
+    containerSearchFilter : {
+        flexDirection: 'row',
+        width: '100%',
+        padding: 12,
+        gap: 12
     },
 
     showMoreTexte: {
