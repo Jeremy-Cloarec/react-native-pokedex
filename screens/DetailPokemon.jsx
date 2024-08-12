@@ -64,6 +64,7 @@ export default function DetailPokemon() {
         try {
             await AsyncStorage.setItem(pokemon.name, JSON.stringify(pokemon));
             setCheckAdd(true);
+            checkExistingPokemon();
         } catch (e) {
             console.log("error", e);
         }
