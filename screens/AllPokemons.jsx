@@ -1,7 +1,7 @@
-import { StyleSheet, ActivityIndicator, Text, View, Image, Pressable, ScrollView } from 'react-native';
+import { StyleSheet, ActivityIndicator, Text, View, Image, Pressable, ScrollView, StatusBar } from 'react-native';
 import { useData } from "../dataContext/contextFetchData";
 import { useNavigation } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import {useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { InputSearchPokemons } from '../components/InputSearchPokemons';
 import { ButtonAfterList } from '../components/ButtonAfterList';
@@ -10,7 +10,7 @@ import Filter from '../components/Filter';
 export default function AllPokemons() {
     const [namePokemon, setNamePokemon] = useState('');
     const insets = useSafeAreaInsets();
-    const { isLoading, setLoading, data, setData, numberItem, setNumberItem, originalData, setOriginalData } = useData();
+    const { isLoading, data, numberItem, setNumberItem, originalData, setOriginalData } = useData();
     const navigation = useNavigation();
     const [messageFetchMore, setMessageFetchMore] = useState("Afficher plus");
 
@@ -40,6 +40,7 @@ export default function AllPokemons() {
             paddingRight: insets.right,
             flexGrow: 1,
         }}>
+            <StatusBar barStyle="light-content"/>
             {numberItem <= 120 && isLoading ? (
                 <ActivityIndicator style={styles.loaderStyle} />
             ) : (
