@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable, ActivityIndicator } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,9 +13,10 @@ export default function DetailPokemon() {
     const [messagAddPokemon, setMessagePokemon] = useState("Ajouter au pokedex");
     const [checkAdd, setCheckAdd] = useState(false);
     const [error, setError] = useState(null);
+    const [isLoading, setLoading] = useState(false);
 
     async function fetchOnePokemon(pokemonName) {
-        // setLoading(true);
+        setLoading(true);
         try {
             const response = await fetch(
                 `https://pokebuildapi.fr/api/v1/pokemon/${(pokemonName)}`,
@@ -28,7 +29,7 @@ export default function DetailPokemon() {
             console.error(error);
             setError('Pokemon non trouvé')
         } finally {
-            // setLoading(false);
+            setLoading(false);
         }
     };
 
@@ -72,28 +73,37 @@ export default function DetailPokemon() {
         <View style={styles.containerDetail}>
             {error ? <Text>{error}</Text> : (
                 <>
-                    <View style={styles.containerImage}>
-                        <Image style={styles.imageCard} source={{ uri: pokemon.image }} />
-                    </View>
-                    <View style={styles.containerPressable}>
-                        {!checkAdd ? (
-                            <Pressable style={styles.containerIcon} onPress={mergePokemon}>
-                                <Ionicons
-                                    style={styles.iconAdd}
-                                    name="add"
-                                    size={52}
-                                    color="#191616" />
-                            </Pressable>) : (<></>)}
-                        <Text style={styles.containerMessage}>{messagAddPokemon}</Text>
-                    </View>
+                    {isLoading ? <ActivityIndicator style={styles.loaderStyle} /> :
+                        <>
+                            <View style={styles.containerImage}>
+                                <Image style={styles.imageCard} source={{ uri: pokemon.image }} />
+                            </View>
+                            <View style={styles.containerPressable}>
+                                {!checkAdd ? (
+                                    <Pressable style={styles.containerIcon} onPress={mergePokemon}>
+                                        <Ionicons
+                                            style={styles.iconAdd}
+                                            name="add"
+                                            size={52}
+                                            color="#191616" />
+                                    </Pressable>) : (<></>)}
+                                <Text style={styles.containerMessage}>{messagAddPokemon}</Text>
+                            </View>
+                        </>
+                    }
                 </>
             )}
-
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+
+    loaderStyle: {
+        marginBottom: 50,
+        marginTop: 50,
+        minWidth: '100%'
+    },
 
     containerDetail: {
         flex: 1,

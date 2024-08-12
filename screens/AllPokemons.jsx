@@ -13,7 +13,6 @@ export default function AllPokemons() {
     const { isLoading, setLoading, data, setData, numberItem, setNumberItem, originalData, setOriginalData } = useData();
     const navigation = useNavigation();
     const [messageFetchMore, setMessageFetchMore] = useState("Afficher plus");
-    const [searchPokemon, setSearchPokemon] = useState(false);
 
     const handlePokemonPress = (pokemonName) => {
         navigation.navigate('DetailPokemon', { pokemonName });
