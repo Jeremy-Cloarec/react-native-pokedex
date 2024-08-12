@@ -40,7 +40,7 @@ export default function AllPokemons() {
             paddingRight: insets.right,
             flexGrow: 1,
         }}>
-            <StatusBar barStyle="light-content"/>
+            <StatusBar barStyle="dark-content" backgroundColor="white"/>
             {numberItem <= 120 && isLoading ? (
                 <ActivityIndicator style={styles.loaderStyle} />
             ) : (
