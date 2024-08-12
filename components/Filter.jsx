@@ -1,9 +1,11 @@
 import { Pressable, StyleSheet } from "react-native";
 import { Icon } from "./Icon";
 
-export default function Filter() {
+export default function Filter({showModalFilter}) {
     return (
-        <Pressable style={styles.pressable}>
+        <Pressable style={styles.pressable}
+            onPress={showModalFilter}
+        >
             <Icon
                 source={require('../assets/filter.png')}
                 style={styles.Icon}

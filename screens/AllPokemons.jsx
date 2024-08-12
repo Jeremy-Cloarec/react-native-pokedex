@@ -1,11 +1,12 @@
 import { StyleSheet, ActivityIndicator, Text, View, Image, Pressable, ScrollView, StatusBar } from 'react-native';
 import { useData } from "../dataContext/contextFetchData";
 import { useNavigation } from '@react-navigation/native';
-import {useState } from 'react';
+import { useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { InputSearchPokemons } from '../components/InputSearchPokemons';
 import { ButtonAfterList } from '../components/ButtonAfterList';
 import Filter from '../components/Filter';
+import { FilterModal } from '../components/filterModal';
 
 export default function AllPokemons() {
     const [namePokemon, setNamePokemon] = useState('');
@@ -13,6 +14,7 @@ export default function AllPokemons() {
     const { isLoading, data, numberItem, setNumberItem, originalData, setOriginalData } = useData();
     const navigation = useNavigation();
     const [messageFetchMore, setMessageFetchMore] = useState("Afficher plus");
+    const [modalVisible, setModalVisible] = useState(false);
 
     const handlePokemonPress = (pokemonName) => {
         navigation.navigate('DetailPokemon', { pokemonName });
@@ -22,6 +24,10 @@ export default function AllPokemons() {
         navigation.navigate('DetailPokemon', {
             pokemonName: pokemonName
         });
+    }
+
+    const showModalFilter = () => {
+        setModalVisible(true)
     }
 
     const showMore = () => {
@@ -40,18 +46,24 @@ export default function AllPokemons() {
             paddingRight: insets.right,
             flexGrow: 1,
         }}>
-            <StatusBar barStyle="dark-content" backgroundColor="white"/>
+            <StatusBar barStyle="dark-content" backgroundColor="white" />
             {numberItem <= 120 && isLoading ? (
                 <ActivityIndicator style={styles.loaderStyle} />
             ) : (
                 <>
-                    <View style={styles.containerSearchFilter}>  
+                    <FilterModal
+                        modalVisible={modalVisible}
+                        setModalVisible={setModalVisible}
+                    />
+                    <View style={styles.containerSearchFilter}>
                         <InputSearchPokemons
                             onChangeText={setNamePokemon}
                             text={namePokemon}
-                            handleInputPressed={()=> handlePokemonSearch(namePokemon)}
+                            handleInputPressed={() => handlePokemonSearch(namePokemon)}
                         />
-                        <Filter />
+                        <Filter
+                            showModalFilter={showModalFilter}
+                        />
                     </View>
                     <View style={styles.containerAll}>
                         {data.map((item) => (
@@ -95,7 +107,7 @@ const styles = StyleSheet.create({
         width: '100%'
     },
 
-    containerSearchFilter : {
+    containerSearchFilter: {
         flexDirection: 'row',
         width: '100%',
         padding: 12,
