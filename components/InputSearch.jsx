@@ -6,11 +6,7 @@ export function InputSearch({ placeholder, text, onChangeText, handleInputPresse
             placeholder={placeholder}
             onChangeText={onChangeText}
             value={text}
-        
-            onSubmitEditing={() => {
-                console.log("onSubmitEditing déclenché");
-                handleInputPressed;
-            }}
+            onSubmitEditing={handleInputPressed}
             style={styles.input}
         />
     )
