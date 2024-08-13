@@ -9,6 +9,9 @@ export function ChooseFilter({ types, generation, selectedGenerations, selectedT
                     onPress={handleType}
                     style={styles.pressable}
                 >
+                    <View style={styles.bulletPoint}>
+                        {selectedTypes && <View style={styles.point}></View>}
+                    </View>
 
                     <Text style={styles.h2}>
                         Filtrer par types
@@ -21,7 +24,11 @@ export function ChooseFilter({ types, generation, selectedGenerations, selectedT
             <View style={selectedGenerations ? styles.containerTypeSelected : styles.containerType}>
                 <Pressable
                     onPress={handleGeneration}
+                    style={styles.pressable}
                 >
+                    <View style={styles.bulletPoint}>
+                        {selectedGenerations && <View style={styles.point}></View>}
+                    </View>
                     <Text style={styles.h2}>
                         Filtrer par générations
                     </Text>
@@ -41,27 +48,46 @@ const styles = StyleSheet.create({
     pressable: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 6,
     },
 
     span: {
         fontSize: 12,
         fontWeight: 'normal',
-
     },
 
     containerType: {
-        gap: 12,
+        gap: 24,
         padding: 12,
     },
 
     containerTypeSelected: {
-        gap: 12,
+        gap: 24,
         padding: 12,
         borderRadius: 8,
         padding: 10,
         borderColor: '#E91E63',
         borderWidth: 2,
         borderRadius: 8,
+        backgroundColor: 'white',
+    },
+
+    bulletPoint: {
+        height: 18,
+        width: 18,
+        borderRadius: 18 / 2,
+        borderColor: '#E91E63',
+        borderWidth: 2,
+        marginRight: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    point: {
+        height: 10,
+        width: 10,
+        borderRadius: 14 / 2,
+        backgroundColor: '#E91E63',
     }
+
+
 })

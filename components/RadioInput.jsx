@@ -3,17 +3,15 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 
 
 export function RadioInput({ data }) {
-    const [selectedType, setSelectedType] = useState(null);
+    const [selectedGeneration, setSelectedGeneration] = useState(null);
 
     const handlePress = (type) => {
-        setSelectedType(type);
-        console.log(type);
-
+        setSelectedGeneration(type);
     };
-
+    
     useEffect(() => {
-        console.log(selectedType);
-    }, [selectedType])
+        console.log(selectedGeneration);
+    }, [selectedGeneration])
 
     return (
         <View style={styles.container}>
@@ -25,12 +23,12 @@ export function RadioInput({ data }) {
                 >
                     <View style={[
                         styles.bullet,
-                        selectedType === type.name && styles.bulletSelected
+                        selectedGeneration === type.name && styles.bulletSelected
                     ]}>
                         <Text
                             style={[
                                 styles.type,
-                                selectedType === type.name && styles.selectedType
+                                selectedGeneration === type.name && styles.selectedType
                             ]}
                         >
                             {type.name}
@@ -47,6 +45,7 @@ const styles = new StyleSheet.create({
         gap: 12,
         flexDirection: 'row',
         flexWrap: 'wrap',
+        justifyContent: 'center',
     },
 
     type: {

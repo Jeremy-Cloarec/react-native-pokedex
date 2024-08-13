@@ -15,7 +15,7 @@ export default function AllPokemons() {
     const navigation = useNavigation();
     const [messageFetchMore, setMessageFetchMore] = useState("Afficher plus");
     const [modalVisible, setModalVisible] = useState(false);
-    const [selectedTypes, setSelectedTypes] = useState(false);
+    const [selectedTypes, setSelectedTypes] = useState(true);
     const [selectedGenerations, setSelectedGeneration] = useState(false);
 
     const handlePokemonPress = (pokemonName) => {
@@ -33,7 +33,7 @@ export default function AllPokemons() {
     }
     const closeModalFilter = () => {
         setModalVisible(false)
-        setSelectedTypes(false);
+        setSelectedTypes(true);
         setSelectedGeneration(false);
     }
 

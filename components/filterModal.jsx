@@ -101,6 +101,7 @@ const styles = new StyleSheet.create({
         padding: 12,
         minWidth: '40%',
         gap: 24,
+        backgroundColor: '#EDEDED',
     },
 
     header: {
