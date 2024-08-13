@@ -1,7 +1,7 @@
 import { StyleSheet, ActivityIndicator, Text, View, Image, Pressable, ScrollView, StatusBar } from 'react-native';
 import { useData } from "../dataContext/contextFetchData";
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { InputSearchPokemons } from '../components/InputSearchPokemons';
 import { ButtonAfterList } from '../components/ButtonAfterList';
@@ -15,6 +15,8 @@ export default function AllPokemons() {
     const navigation = useNavigation();
     const [messageFetchMore, setMessageFetchMore] = useState("Afficher plus");
     const [modalVisible, setModalVisible] = useState(false);
+    const [selectedTypes, setSelectedTypes] = useState(false);
+    const [selectedGenerations, setSelectedGeneration] = useState(false);
 
     const handlePokemonPress = (pokemonName) => {
         navigation.navigate('DetailPokemon', { pokemonName });
@@ -29,6 +31,11 @@ export default function AllPokemons() {
     const showModalFilter = () => {
         setModalVisible(true)
     }
+    const closeModalFilter = () => {
+        setModalVisible(false)
+        setSelectedTypes(false);
+        setSelectedGeneration(false);
+    }
 
     const showMore = () => {
         if (numberItem <= 898) {
@@ -37,6 +44,20 @@ export default function AllPokemons() {
             setMessageFetchMore("Vous êtes à la fin de la liste")
         }
     }
+
+    const handleType = () => {
+        setSelectedTypes(true);
+        setSelectedGeneration(false);
+    }
+
+    const handleGeneration = () => {
+        setSelectedTypes(false);
+        setSelectedGeneration(true);
+    }
+
+    useEffect(()=> {
+        console.log(selectedTypes, selectedGenerations);
+    }, [selectedTypes, selectedGenerations])
 
     return (
         <ScrollView contentContainerStyle={{
@@ -54,6 +75,11 @@ export default function AllPokemons() {
                     <FilterModal
                         modalVisible={modalVisible}
                         setModalVisible={setModalVisible}
+                        handleType={handleType}
+                        handleGeneration={handleGeneration}
+                        selectedTypes={selectedTypes}
+                        selectedGenerations={selectedGenerations}
+                        closeModalFilter={closeModalFilter}
                     />
                     <View style={styles.containerSearchFilter}>
                         <InputSearchPokemons

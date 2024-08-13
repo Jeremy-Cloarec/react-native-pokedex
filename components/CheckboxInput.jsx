@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 
-export function Radio({ data }) {
+export function CheckboxInput({ data }) {
     return (
         <View style={styles.container}>
             {data.map((type, index) => (
@@ -11,7 +11,7 @@ export function Radio({ data }) {
 }
 
 const styles = new StyleSheet.create({
-    container: {   
+    container: {
         gap: 12,
         flexDirection: 'row',
         flexWrap: 'wrap',
@@ -19,7 +19,7 @@ const styles = new StyleSheet.create({
 
     type: {
         padding: 6,
-        borderRadius: 12,
+        borderRadius: 4,
         backgroundColor: '#F5F5F5',
         color: '#000',
     }

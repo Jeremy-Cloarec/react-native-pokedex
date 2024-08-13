@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Modal, View, Text, StyleSheet, Pressable, Image } from "react-native"
 import { ChooseFilter } from "./ChooseFilter";
-import { Checkbox } from "./Checkbox";
-import { Radio } from "./Radio";
+import { CheckboxInput } from "./CheckboxInput";
+import { RadioInput } from "./RadioInput";
+
 
 const dataType = [
     { name: 'Plante' },
@@ -26,19 +27,26 @@ const dataType = [
 ]
 
 const dataGeneration = [
-    { name: 'Génération 1' },
-    { name: 'Génération 2' },
-    { name: 'Génération 3' },
-    { name: 'Génération 4' },
-    { name: 'Génération 5' },
-    { name: 'Génération 6' },
-    { name: 'Génération 7' },
-    { name: 'Génération 8' },
-
+    { name: '1' },
+    { name: '2' },
+    { name: '3' },
+    { name: '4' },
+    { name: '5' },
+    { name: '6' },
+    { name: '7' },
+    { name: '8' },
 ]
 
 
-export function FilterModal({ modalVisible, setModalVisible }) {
+export function FilterModal({
+    modalVisible,
+    setModalVisible,
+    handleType,
+    handleGeneration,
+    selectedGenerations,
+    selectedTypes,
+    closeModalFilter
+}) {
     return (
         <View>
             <Modal
@@ -54,7 +62,7 @@ export function FilterModal({ modalVisible, setModalVisible }) {
                         <View style={styles.header}>
                             <Text style={styles.headerTitle}>Filtres</Text>
                             <Pressable
-                                onPress={() => setModalVisible(false)}>
+                                onPress={closeModalFilter}>
                                 <Image
                                     source={require('../assets/close.png')}
                                     style={styles.close}
@@ -62,9 +70,13 @@ export function FilterModal({ modalVisible, setModalVisible }) {
                             </Pressable>
                         </View>
                         <View style={styles.body}>
-                            <ChooseFilter
-                                types={<Checkbox data={dataType} />}
-                                generation={<Radio data={dataGeneration} />}
+                            <ChooseFilter 
+                                types={<CheckboxInput data={dataType} />}
+                                generation={<RadioInput data={dataGeneration}/>}
+                                handleType={handleType}
+                                handleGeneration={handleGeneration}
+                                selectedGenerations={selectedGenerations}
+                                selectedTypes={selectedTypes}
                             />
                         </View>
                     </View>
@@ -103,11 +115,11 @@ const styles = new StyleSheet.create({
     },
 
     close: {
-        width: 24,
-        height: 24,
+        width: 18,
+        height: 18,
     },
 
-    body:{
+    body: {
         gap: 24,
     }
 })
