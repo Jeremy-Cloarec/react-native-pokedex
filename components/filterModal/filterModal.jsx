@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Modal, View, Text, StyleSheet, Pressable, Image } from "react-native"
+import { Modal, View, Text, StyleSheet, Pressable, Image, TouchableOpacity } from "react-native"
 import { ChooseFilter } from "./ChooseFilter";
 import { CheckboxInput } from "./CheckboxInput";
 import { RadioInput } from "./RadioInput";
@@ -37,13 +37,13 @@ export function FilterModal({
                     <View style={styles.centeredView}>
                         <View style={styles.header}>
                             <Text style={styles.headerTitle}>Filtres</Text>
-                            <Pressable
+                            <TouchableOpacity
                                 onPress={closeModalFilter}>
                                 <Image
                                     source={require('../../assets/close.png')}
                                     style={styles.close}
                                 />
-                            </Pressable>
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.body}>
                             <ChooseFilter
@@ -66,11 +66,18 @@ export function FilterModal({
                                 selectedTypes={selectedTypes}
                             />
                         </View>
-                        <Pressable onPress={resetFilter}> 
-                            <Text>
-                                Effecer les filtres
+                        <TouchableOpacity
+                            onPress={resetFilter}
+                            style={styles.resetContainer}
+                        >
+                            <Image
+                                source={require('../../assets/reset.png')}
+                                style={styles.restIcon}
+                            />
+                            <Text style={styles.reset}>
+                                Effacer les filtres
                             </Text>
-                        </Pressable>
+                        </TouchableOpacity>
                         <ButtonModal
                             text={'Appliquer les filtres'}
                             onPress={applyFilter}
@@ -118,5 +125,20 @@ const styles = new StyleSheet.create({
 
     body: {
         gap: 24,
+    },
+    resetContainer: {
+        flexDirection: 'row',
+        padding: 12,
+        alignItems: 'center',
+        gap: 12,
+    },
+
+    reset: {
+        fontWeight: 'bold',
+        fontSize: 16,
+    },
+    restIcon: {
+        width: 20,
+        height: 18,
     }
 })

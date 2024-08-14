@@ -38,8 +38,8 @@ export default function AllPokemons() {
 
     const closeModalFilter = () => {
         setModalVisible(false)
-        setSelectedTypes(true);
-        setSelectedGeneration(false);
+        // setSelectedTypes(true);
+        // setSelectedGeneration(false);
     }
 
     const showMore = () => {
@@ -70,6 +70,7 @@ export default function AllPokemons() {
     const applyFilter = () => {
         if (!generationName && typeName.length === 0) {
             console.log('Aucun filtre appliqué');
+            closeModalFilter();
             return;
         }
 
@@ -97,6 +98,11 @@ export default function AllPokemons() {
         }
     }, [urlFilter]);
 
+    useEffect(() => {
+        console.log('typeName', typeName);
+        console.log('generationName', generationName);
+    }, [typeName, generationName]);
+
     async function fetchFilterdata() {
         setLoading(true);
 
@@ -106,7 +112,6 @@ export default function AllPokemons() {
             console.log(`urlFilter : ${urlFilter}`);
 
             setData(jsonData);
-
 
         } catch (error) {
             console.error(error);
