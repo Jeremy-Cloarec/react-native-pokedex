@@ -1,46 +1,62 @@
 import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 
-
-export function RadioInput({ data, selectedGenerations }) {
-    const [selected, setSelected] = useState(null);
+export function CheckboxInput({
+    data,
+    selectedTypes,
+    generationName,
+    setGenerationName 
+}) {
 
     const handlePress = (type) => {
-        setSelected(type);
+        setGenerationName(prevSelectedType => {
+            // Si le nombre de types sélectionnés est déjà 2
+            if (prevSelectedType.includes(type)) {
+                // Si le type est déjà sélectionné, le retirer
+                return prevSelectedType.filter(selected => selected !== type);
+
+            } else if (prevSelectedType.length >= 2) {
+                console.log('2 types maximum');
+                // Retirer le premier type (le plus ancien) et ajouter le nouveau type
+                return [
+                    ...prevSelectedType.slice(1), // Retirer le premier type
+                    type // Ajouter le nouveau type
+                ];
+
+            } else {
+                // Sinon, ajouter simplement le nouveau type
+                return [
+                    ...prevSelectedType,
+                    type
+                ];
+            }
+        });
     };
 
     const removeSelected = () => {
-        if (!selectedGenerations) setSelected(null);
+        if (!selectedTypes) setGenerationName([]);
     }
 
     useEffect(() => {
         removeSelected();
-    }, [selectedGenerations])
-    
-    useEffect(() => {
-        console.log(selected);
-    }, [selected])
-
-    useEffect(() => {
-        console.log(`selectedGenerations : ${selectedGenerations}`);
-    }, [selectedGenerations])
+    }, [selectedTypes])
 
     return (
         <View style={styles.container}>
             {data.map((type, index) => (
                 <Pressable
                     key={index}
-                    onPress={() => selectedGenerations && handlePress(type.name)}
+                    onPress={() => selectedTypes && handlePress(type.name)}
                     style={styles.pressable}
                 >
                     <View style={[
                         styles.bullet,
-                        selected === type.name && styles.bulletSelected
+                        generationName.includes(type.name) && styles.bulletSelected
                     ]}>
                         <Text
                             style={[
                                 styles.type,
-                                selected === type.name && styles.selectedType
+                                generationName.includes(type.name) && styles.selectedType
                             ]}
                         >
                             {type.name}
@@ -56,15 +72,15 @@ const styles = new StyleSheet.create({
     container: {
         gap: 12,
         flexDirection: 'row',
-        flexWrap: 'wrap',
         justifyContent: 'center',
+        flexWrap: 'wrap',
     },
 
     type: {
         padding: 6,
         borderRadius: 12,
         color: '#000',
-        fontSize: 24,
+        fontSize: 18,
         fontWeight: 'bold',
     },
 
@@ -73,11 +89,9 @@ const styles = new StyleSheet.create({
     },
 
     bullet: {
-        height: 50,
-        width: 50,
         borderWidth: 2,
         borderColor: 'black',
-        borderRadius: 50 / 2,
+        borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',
     },

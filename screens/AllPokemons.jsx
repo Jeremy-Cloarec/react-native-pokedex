@@ -1,12 +1,12 @@
 import { StyleSheet, ActivityIndicator, Text, View, Image, Pressable, ScrollView, StatusBar } from 'react-native';
-import { useData } from "../dataContext/contextFetchData";
+import { useData } from "../data/contextFetchData";
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { InputSearchPokemons } from '../components/InputSearchPokemons';
+import { InputSearchPokemons } from '../components/searchBar/InputSearchPokemons';
 import { ButtonAfterList } from '../components/ButtonAfterList';
-import Filter from '../components/Filter';
-import { FilterModal } from '../components/filterModal';
+import Filter from '../components/filterModal/Filter';
+import { FilterModal } from '../components/filterModal/filterModal';
 
 export default function AllPokemons() {
     const [namePokemon, setNamePokemon] = useState('');
@@ -17,6 +17,8 @@ export default function AllPokemons() {
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedTypes, setSelectedTypes] = useState(true);
     const [selectedGenerations, setSelectedGeneration] = useState(false);
+    const [generationName, setGenerationName] = useState([]);
+    const [typeName, setTypeName] = useState(null);
 
     const handlePokemonPress = (pokemonName) => {
         navigation.navigate('DetailPokemon', { pokemonName });
@@ -31,6 +33,7 @@ export default function AllPokemons() {
     const showModalFilter = () => {
         setModalVisible(true)
     }
+
     const closeModalFilter = () => {
         setModalVisible(false)
         setSelectedTypes(true);
@@ -59,6 +62,14 @@ export default function AllPokemons() {
         console.log(selectedTypes, selectedGenerations);
     }, [selectedTypes, selectedGenerations])
 
+    useEffect(() => {
+        console.log(`TypeName : ${typeName}`);
+    }, [typeName])
+
+    useEffect(() => {
+        console.log(`generationName : ${generationName}`);
+    }, [generationName])
+
     return (
         <ScrollView contentContainerStyle={{
             paddingTop: insets.top,
@@ -80,6 +91,10 @@ export default function AllPokemons() {
                         selectedTypes={selectedTypes}
                         selectedGenerations={selectedGenerations}
                         closeModalFilter={closeModalFilter}
+                        generationName={generationName}
+                        setGenerationName={setGenerationName}
+                        typeName={typeName}
+                        setTypeName={setTypeName}
                     />
                     <View style={styles.containerSearchFilter}>
                         <InputSearchPokemons

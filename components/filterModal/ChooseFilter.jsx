@@ -1,6 +1,13 @@
 import { View, StyleSheet, Text, Pressable } from 'react-native';
 
-export function ChooseFilter({ types, generation, selectedGenerations, selectedTypes, handleType, handleGeneration }) {
+export function ChooseFilter({
+    types,
+    generation,
+    selectedGenerations,
+    selectedTypes,
+    handleType,
+    handleGeneration,
+}) {
 
     return (
         <>

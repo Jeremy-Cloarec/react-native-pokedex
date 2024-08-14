@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { TextInput, StyleSheet, View, Image } from "react-native";
 import { InputSearch } from "./InputSearch";
-import { Icon } from "./Icon";
-import Filter from "./Filter";
+import { Icon } from "../Icon";
+import Filter from "../filterModal/Filter";
 
 export function InputSearchPokemons({ text, onChangeText, handleInputPressed }) {
     return (
         <View style={styles.containerSearch}>
             <Icon
-                source={require('../assets/search.png')}
+                source={require('../../assets/search.png')}
                 style={styles.searchIcon}
             />
             <InputSearch

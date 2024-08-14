@@ -1,13 +1,13 @@
 import { Pressable, StyleSheet } from "react-native";
-import { Icon } from "./Icon";
+import { Icon } from "../Icon";
 
-export default function Filter({showModalFilter}) {
+export default function Filter({ showModalFilter }) {
     return (
         <Pressable style={styles.pressable}
             onPress={showModalFilter}
         >
             <Icon
-                source={require('../assets/filter.png')}
+                source={require('../../assets/filter.png')}
                 style={styles.Icon}
             />
         </Pressable>
@@ -30,5 +30,4 @@ const styles = StyleSheet.create({
         height: 24,
         opacity: 0.6
     }
-
 })

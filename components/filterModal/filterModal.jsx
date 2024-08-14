@@ -3,39 +3,8 @@ import { Modal, View, Text, StyleSheet, Pressable, Image } from "react-native"
 import { ChooseFilter } from "./ChooseFilter";
 import { CheckboxInput } from "./CheckboxInput";
 import { RadioInput } from "./RadioInput";
-
-
-const dataType = [
-    { name: 'Plante' },
-    { name: 'Feu' },
-    { name: 'Eau' },
-    { name: 'Insecte' },
-    { name: 'Normal' },
-    { name: 'Electrik' },
-    { name: 'Poison' },
-    { name: 'Fée' },
-    { name: 'Vol' },
-    { name: 'Combat' },
-    { name: 'Psy' },
-    { name: 'Sol' },
-    { name: 'Roche' },
-    { name: 'Spectre' },
-    { name: 'Acier' },
-    { name: 'Glace' },
-    { name: 'Dragon' },
-    { name: 'Ténèbres' },
-]
-
-const dataGeneration = [
-    { name: '1' },
-    { name: '2' },
-    { name: '3' },
-    { name: '4' },
-    { name: '5' },
-    { name: '6' },
-    { name: '7' },
-    { name: '8' },
-]
+import { dataTypes } from "../../data/dataTypes";
+import { dataGenerations } from "../../data/dataGenerations";
 
 
 export function FilterModal({
@@ -45,7 +14,11 @@ export function FilterModal({
     handleGeneration,
     selectedGenerations,
     selectedTypes,
-    closeModalFilter
+    closeModalFilter,
+    generationName,
+    setGenerationName,
+    typeName,
+    setTypeName
 }) {
     return (
         <View>
@@ -64,7 +37,7 @@ export function FilterModal({
                             <Pressable
                                 onPress={closeModalFilter}>
                                 <Image
-                                    source={require('../assets/close.png')}
+                                    source={require('../../assets/close.png')}
                                     style={styles.close}
                                 />
                             </Pressable>
@@ -72,11 +45,17 @@ export function FilterModal({
                         <View style={styles.body}>
                             <ChooseFilter
                                 types={<CheckboxInput
-                                    data={dataType}
-                                    selectedTypes={selectedTypes} />}
+                                    data={dataTypes}
+                                    selectedTypes={selectedTypes}
+                                    generationName={generationName}
+                                    setGenerationName={setGenerationName}
+                                />}
                                 generation={<RadioInput
-                                    data={dataGeneration}
-                                    selectedGenerations={selectedGenerations} />}
+                                    data={dataGenerations}
+                                    selectedGenerations={selectedGenerations}
+                                    typeName={typeName}
+                                    setTypeName={setTypeName}
+                                />}
                                 handleType={handleType}
                                 handleGeneration={handleGeneration}
                                 selectedGenerations={selectedGenerations}
