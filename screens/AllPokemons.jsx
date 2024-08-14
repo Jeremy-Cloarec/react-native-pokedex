@@ -17,8 +17,10 @@ export default function AllPokemons() {
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedTypes, setSelectedTypes] = useState(true);
     const [selectedGenerations, setSelectedGeneration] = useState(false);
-    const [generationName, setGenerationName] = useState([]);
-    const [typeName, setTypeName] = useState(null);
+    const [generationName, setGenerationName] = useState(null);
+    const [typeName, setTypeName] = useState([]);
+    const [searchByFilter, setSearchByFilter] = useState(false);
+    const [urlFilter, setUrlFilter] = useState(null);
 
     const handlePokemonPress = (pokemonName) => {
         navigation.navigate('DetailPokemon', { pokemonName });
@@ -58,26 +60,50 @@ export default function AllPokemons() {
         setSelectedGeneration(true);
     }
 
+    const resetFilter = () => {
+        setTypeName([]);
+        setGenerationName(null);
+        setUrlFilter(null);
+        setData(originalData);
+    }
+
     const applyFilter = () => {
-        if (!typeName && generationName.length === 0) {
+        if (!generationName && typeName.length === 0) {
             console.log('Aucun filtre appliqué');
             return;
         }
 
-        console.log(`TypeName : ${typeName}`);
-        console.log(`generationName : ${generationName}`);
+        let newUrlFilter = "";
 
-        fetchFilterdata();
+        if (typeName.length !== 0 && typeName.length === 1) {
+            newUrlFilter = `https://pokebuildapi.fr/api/v1/pokemon/type/${typeName}`;
+        } else if (typeName.length !== 0 && typeName.length === 2) {
+            newUrlFilter = `https://pokebuildapi.fr/api/v1/pokemon/types/${typeName[0]}/${typeName[1]}`
+        }
+
+        if (generationName) {
+            newUrlFilter = `https://pokebuildapi.fr/api/v1/pokemon/generation/${generationName}`;
+        }
+
         setModalVisible(false);
+        setUrlFilter(newUrlFilter);
     }
+
+    useEffect(() => {
+        if (urlFilter) {
+            console.log('urlFilter', urlFilter);
+
+            fetchFilterdata();
+        }
+    }, [urlFilter]);
 
     async function fetchFilterdata() {
         setLoading(true);
+
         try {
-            const url = `https://pokebuildapi.fr/api/v1/pokemon/generation/${generationName}`
-            const response = await fetch(url);
+            const response = await fetch(urlFilter);
             const jsonData = await response.json();
-            console.log(url);
+            console.log(`urlFilter : ${urlFilter}`);
 
             setData(jsonData);
 
@@ -116,6 +142,7 @@ export default function AllPokemons() {
                         typeName={typeName}
                         setTypeName={setTypeName}
                         applyFilter={applyFilter}
+                        resetFilter={resetFilter}
                     />
                     <View style={styles.containerSearchFilter}>
                         <InputSearchPokemons
@@ -127,6 +154,14 @@ export default function AllPokemons() {
                             showModalFilter={showModalFilter}
                         />
                     </View>
+                    {/* {typeName.length !== 0 && urlFilter && (
+                        <View>
+                            <Text>Type sélectionné :</Text>
+                            {typeName.map((type, index) => (
+                                <Text key={index}>{type}</Text>
+                            ))}
+                        </View>
+                    )} */}
                     <View style={styles.containerAll}>
                         {data.map((item) => (
                             <Pressable key={item.id} onPress={() => handlePokemonPress(item.name)} style={styles.containercard}>

@@ -20,7 +20,8 @@ export function FilterModal({
     setGenerationName,
     typeName,
     setTypeName,
-    applyFilter
+    applyFilter,
+    resetFilter
 }) {
     return (
         <View>
@@ -65,6 +66,11 @@ export function FilterModal({
                                 selectedTypes={selectedTypes}
                             />
                         </View>
+                        <Pressable onPress={resetFilter}> 
+                            <Text>
+                                Effecer les filtres
+                            </Text>
+                        </Pressable>
                         <ButtonModal
                             text={'Appliquer les filtres'}
                             onPress={applyFilter}
