@@ -1,13 +1,13 @@
-import { Pressable, StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 export function ButtonAfterList({ text, onPress }) {
     return (
-        <Pressable
+        <TouchableOpacity
             style={styles.showMore}
             onPress={onPress}
         >
             <Text>{text}</Text>
-        </Pressable>
+        </TouchableOpacity>
     );
 }
 

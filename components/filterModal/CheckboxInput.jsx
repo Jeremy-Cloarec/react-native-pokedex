@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 
 export function CheckboxInput({
     data,
     selectedTypes,
-    generationName,
-    setGenerationName 
+    typeName,
+    setTypeName
 }) {
 
     const handlePress = (type) => {
-        setGenerationName(prevSelectedType => {
+        setTypeName(prevSelectedType => {
             // Si le nombre de types sélectionnés est déjà 2
             if (prevSelectedType.includes(type)) {
                 // Si le type est déjà sélectionné, le retirer
@@ -26,7 +26,7 @@ export function CheckboxInput({
             } else {
                 // Sinon, ajouter simplement le nouveau type
                 return [
-                    ...prevSelectedType,
+                    ...prevSelectedType, // Ajouter les types déjà sélectionnés
                     type
                 ];
             }
@@ -34,7 +34,7 @@ export function CheckboxInput({
     };
 
     const removeSelected = () => {
-        if (!selectedTypes) setGenerationName([]);
+        if (!selectedTypes) setTypeName([]);
     }
 
     useEffect(() => {
@@ -51,12 +51,12 @@ export function CheckboxInput({
                 >
                     <View style={[
                         styles.bullet,
-                        generationName.includes(type.name) && styles.bulletSelected
+                        typeName && typeName.includes(type.name) && styles.bulletSelected
                     ]}>
                         <Text
                             style={[
                                 styles.type,
-                                generationName.includes(type.name) && styles.selectedType
+                                typeName && typeName.includes(type.name) && styles.selectedType
                             ]}
                         >
                             {type.name}

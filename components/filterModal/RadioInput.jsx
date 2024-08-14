@@ -5,16 +5,16 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 export function RadioInput({ 
     data, 
     selectedGenerations,
-    typeName,
-    setTypeName
+    generationName,
+    setGenerationName
 }) {
 
     const handlePress = (type) => {
-        setTypeName(type);
+        setGenerationName(type);
     };
 
     const removeSelected = () => {
-        if (!selectedGenerations) setTypeName(null);
+        if (!selectedGenerations) setGenerationName(null);
     }
 
     useEffect(() => {
@@ -31,12 +31,12 @@ export function RadioInput({
                 >
                     <View style={[
                         styles.bullet,
-                        typeName === type.name && styles.bulletSelected
+                        generationName === type.name && styles.bulletSelected
                     ]}>
                         <Text
                             style={[
                                 styles.type,
-                                typeName === type.name && styles.selectedType
+                                generationName === type.name && styles.selectedType
                             ]}
                         >
                             {type.name}

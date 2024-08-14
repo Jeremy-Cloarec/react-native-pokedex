@@ -11,7 +11,7 @@ import { FilterModal } from '../components/filterModal/filterModal';
 export default function AllPokemons() {
     const [namePokemon, setNamePokemon] = useState('');
     const insets = useSafeAreaInsets();
-    const { isLoading, data, numberItem, setNumberItem, originalData, setOriginalData } = useData();
+    const { isLoading, data, setData, numberItem, setNumberItem, originalData, setOriginalData, setLoading } = useData();
     const navigation = useNavigation();
     const [messageFetchMore, setMessageFetchMore] = useState("Afficher plus");
     const [modalVisible, setModalVisible] = useState(false);
@@ -58,17 +58,37 @@ export default function AllPokemons() {
         setSelectedGeneration(true);
     }
 
-    useEffect(() => {
-        console.log(selectedTypes, selectedGenerations);
-    }, [selectedTypes, selectedGenerations])
+    const applyFilter = () => {
+        if (!typeName && generationName.length === 0) {
+            console.log('Aucun filtre appliqué');
+            return;
+        }
 
-    useEffect(() => {
         console.log(`TypeName : ${typeName}`);
-    }, [typeName])
-
-    useEffect(() => {
         console.log(`generationName : ${generationName}`);
-    }, [generationName])
+
+        fetchFilterdata();
+        setModalVisible(false);
+    }
+
+    async function fetchFilterdata() {
+        setLoading(true);
+        try {
+            const url = `https://pokebuildapi.fr/api/v1/pokemon/generation/${generationName}`
+            const response = await fetch(url);
+            const jsonData = await response.json();
+            console.log(url);
+
+            setData(jsonData);
+
+
+        } catch (error) {
+            console.error(error);
+        } finally {
+            console.log('Filtre appliqué');
+            setLoading(false);
+        }
+    }
 
     return (
         <ScrollView contentContainerStyle={{
@@ -95,6 +115,7 @@ export default function AllPokemons() {
                         setGenerationName={setGenerationName}
                         typeName={typeName}
                         setTypeName={setTypeName}
+                        applyFilter={applyFilter}
                     />
                     <View style={styles.containerSearchFilter}>
                         <InputSearchPokemons

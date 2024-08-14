@@ -5,6 +5,7 @@ import { CheckboxInput } from "./CheckboxInput";
 import { RadioInput } from "./RadioInput";
 import { dataTypes } from "../../data/dataTypes";
 import { dataGenerations } from "../../data/dataGenerations";
+import { ButtonModal } from "./ButtonModal";
 
 
 export function FilterModal({
@@ -18,7 +19,8 @@ export function FilterModal({
     generationName,
     setGenerationName,
     typeName,
-    setTypeName
+    setTypeName,
+    applyFilter
 }) {
     return (
         <View>
@@ -47,14 +49,15 @@ export function FilterModal({
                                 types={<CheckboxInput
                                     data={dataTypes}
                                     selectedTypes={selectedTypes}
-                                    generationName={generationName}
-                                    setGenerationName={setGenerationName}
+                                    typeName={typeName}
+                                    setTypeName={setTypeName}
+
                                 />}
                                 generation={<RadioInput
                                     data={dataGenerations}
                                     selectedGenerations={selectedGenerations}
-                                    typeName={typeName}
-                                    setTypeName={setTypeName}
+                                    generationName={generationName}
+                                    setGenerationName={setGenerationName}
                                 />}
                                 handleType={handleType}
                                 handleGeneration={handleGeneration}
@@ -62,6 +65,10 @@ export function FilterModal({
                                 selectedTypes={selectedTypes}
                             />
                         </View>
+                        <ButtonModal
+                            text={'Appliquer les filtres'}
+                            onPress={applyFilter}
+                        />
                     </View>
                 </View>
             </Modal>

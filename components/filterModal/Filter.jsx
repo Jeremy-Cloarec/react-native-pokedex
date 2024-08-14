@@ -28,6 +28,6 @@ const styles = StyleSheet.create({
     Icon: {
         width: 32,
         height: 24,
-        opacity: 0.6
+        opacity: 1
     }
 })

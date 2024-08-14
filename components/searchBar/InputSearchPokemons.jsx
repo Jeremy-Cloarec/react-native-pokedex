@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { TextInput, StyleSheet, View, Image } from "react-native";
 import { InputSearch } from "./InputSearch";
 import { Icon } from "../Icon";
-import Filter from "../filterModal/Filter";
 
 export function InputSearchPokemons({ text, onChangeText, handleInputPressed }) {
     return (
@@ -39,6 +38,6 @@ const styles = StyleSheet.create({
     searchIcon: {
         width: 24,
         height: 24,
-        opacity: 0.6
+        opacity: 1
     }
 })

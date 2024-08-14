@@ -19,7 +19,7 @@ export default function DetailPokemon() {
         setLoading(true);
         try {
             const response = await fetch(
-                `https://pokebuildapi.fr/api/v1/pokemon/${(pokemonName)}`,
+                `https://pokebuildapi.fr/api/v1/pokemon/${pokemonName}`,
             );
             const jsonData = await response.json();
             setPokemon(jsonData);
