@@ -55,7 +55,7 @@ export default function AllPokemons() {
         setSelectedGeneration(true);
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         console.log(selectedTypes, selectedGenerations);
     }, [selectedTypes, selectedGenerations])
 

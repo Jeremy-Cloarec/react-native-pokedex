@@ -70,9 +70,13 @@ export function FilterModal({
                             </Pressable>
                         </View>
                         <View style={styles.body}>
-                            <ChooseFilter 
-                                types={<CheckboxInput data={dataType} />}
-                                generation={<RadioInput data={dataGeneration}/>}
+                            <ChooseFilter
+                                types={<CheckboxInput
+                                    data={dataType}
+                                    selectedTypes={selectedTypes} />}
+                                generation={<RadioInput
+                                    data={dataGeneration}
+                                    selectedGenerations={selectedGenerations} />}
                                 handleType={handleType}
                                 handleGeneration={handleGeneration}
                                 selectedGenerations={selectedGenerations}

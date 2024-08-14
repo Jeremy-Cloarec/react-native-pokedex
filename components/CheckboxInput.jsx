@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 
-export function CheckboxInput({ data }) {
-    const [selectedType, setSelectedType] = useState([]);
+export function CheckboxInput({ data, selectedTypes }) {
+    const [selected, setSelected] = useState([]);
 
     const handlePress = (type) => {
-        setSelectedType(prevSelectedType => {
+        setSelected(prevSelectedType => {
             // Si le nombre de types sélectionnés est déjà 2
             if (prevSelectedType.includes(type)) {
                 // Si le type est déjà sélectionné, le retirer
-                return prevSelectedType.filter(selectedType => selectedType !== type);
+                return prevSelectedType.filter(selected => selected !== type);
 
             } else if (prevSelectedType.length >= 2) {
                 console.log('2 types maximum');
@@ -29,26 +29,34 @@ export function CheckboxInput({ data }) {
         });
     };
 
+    const removeSelected = () => {
+        if (!selectedTypes) setSelected([]);
+    }
+
     useEffect(() => {
-        console.log(selectedType);
-    }, [selectedType])
+        removeSelected();
+    }, [selectedTypes])
+
+    useEffect(() => {
+        console.log(`Type : ${selectedTypes}`);
+    }, [selectedTypes])
 
     return (
         <View style={styles.container}>
             {data.map((type, index) => (
                 <Pressable
                     key={index}
-                    onPress={() => handlePress(type.name)}
+                    onPress={() => selectedTypes && handlePress(type.name)}
                     style={styles.pressable}
                 >
                     <View style={[
                         styles.bullet,
-                        selectedType.includes(type.name) && styles.bulletSelected
+                        selected.includes(type.name) && styles.bulletSelected
                     ]}>
                         <Text
                             style={[
                                 styles.type,
-                                selectedType.includes(type.name) && styles.selectedType
+                                selected.includes(type.name) && styles.selectedType
                             ]}
                         >
                             {type.name}

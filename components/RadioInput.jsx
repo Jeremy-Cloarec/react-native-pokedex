@@ -2,33 +2,45 @@ import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 
 
-export function RadioInput({ data }) {
-    const [selectedGeneration, setSelectedGeneration] = useState(null);
+export function RadioInput({ data, selectedGenerations }) {
+    const [selected, setSelected] = useState(null);
 
     const handlePress = (type) => {
-        setSelectedGeneration(type);
+        setSelected(type);
     };
+
+    const removeSelected = () => {
+        if (!selectedGenerations) setSelected(null);
+    }
+
+    useEffect(() => {
+        removeSelected();
+    }, [selectedGenerations])
     
     useEffect(() => {
-        console.log(selectedGeneration);
-    }, [selectedGeneration])
+        console.log(selected);
+    }, [selected])
+
+    useEffect(() => {
+        console.log(`selectedGenerations : ${selectedGenerations}`);
+    }, [selectedGenerations])
 
     return (
         <View style={styles.container}>
             {data.map((type, index) => (
                 <Pressable
                     key={index}
-                    onPress={() => handlePress(type.name)}
+                    onPress={() => selectedGenerations && handlePress(type.name)}
                     style={styles.pressable}
                 >
                     <View style={[
                         styles.bullet,
-                        selectedGeneration === type.name && styles.bulletSelected
+                        selected === type.name && styles.bulletSelected
                     ]}>
                         <Text
                             style={[
                                 styles.type,
-                                selectedGeneration === type.name && styles.selectedType
+                                selected === type.name && styles.selectedType
                             ]}
                         >
                             {type.name}
