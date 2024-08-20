@@ -6,7 +6,9 @@ const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 export function BottomSheetDrawer () {
     // initiating gesture
-    const gesture = Gesture.Pan();
+    const gesture = Gesture.Pan().onUpdate((event) => {
+        console.log({ event });
+    });
 
     return (
         <GestureDetector gesture={gesture}>
