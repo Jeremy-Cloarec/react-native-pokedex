@@ -1,9 +1,12 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, Pressable, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {BottomSheetDrawer} from '../components/BottomSheetDrawer';
+
 
 export default function DetailPokemon() {
     const [pokemon, setPokemon] = useState({});
@@ -71,30 +74,36 @@ export default function DetailPokemon() {
     }
 
     return (
-        <View style={styles.containerDetail}>
-            {error ? <Text>{error}</Text> : (
-                <>
-                    {isLoading ? <ActivityIndicator style={styles.loaderStyle} /> :
-                        <>
-                            <View style={styles.containerImage}>
-                                <Image style={styles.imageCard} source={{ uri: pokemon.image }} />
-                            </View>
-                            <View style={styles.containerPressable}>
-                                {!checkAdd ? (
-                                    <Pressable style={styles.containerIcon} onPress={mergePokemon}>
-                                        <Ionicons
-                                            style={styles.iconAdd}
-                                            name="add"
-                                            size={52}
-                                            color="#191616" />
-                                    </Pressable>) : (<></>)}
-                                <Text style={styles.containerMessage}>{messagAddPokemon}</Text>
-                            </View>
-                        </>
-                    }
-                </>
-            )}
-        </View>
+        <GestureHandlerRootView>
+            <View style={styles.containerDetail}>
+                {error ? <Text>{error}</Text> : (
+                    <>
+                        {isLoading ? <ActivityIndicator style={styles.loaderStyle} /> :
+                            <>
+                                <TouchableOpacity style={styles.buttonModal}>
+                                    <Text>Open modal</Text>
+                                </TouchableOpacity>
+                                <View style={styles.containerImage}>
+                                    <Image style={styles.imageCard} source={{ uri: pokemon.image }} />
+                                </View>
+                                <View style={styles.containerPressable}>
+                                    {!checkAdd ? (
+                                        <Pressable style={styles.containerIcon} onPress={mergePokemon}>
+                                            <Ionicons
+                                                style={styles.iconAdd}
+                                                name="add"
+                                                size={52}
+                                                color="#191616" />
+                                        </Pressable>) : (<></>)}
+                                    <Text style={styles.containerMessage}>{messagAddPokemon}</Text>
+                                </View>
+                            </>
+                        }
+                    </>
+                )}
+            </View>
+            <BottomSheetDrawer />
+        </GestureHandlerRootView>
     );
 }
 
@@ -134,6 +143,16 @@ const styles = StyleSheet.create({
         alignItems: "center",
         textAlign: 'center'
     },
+
+    buttonModal : {
+        backgroundColor: "#D3D3D3",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 16,
+        margin: 12,
+        padding: 10,
+    },
+    
 
     iconAdd: {
         backgroundColor: "rgba(0, 0, 0, 0.1)",
