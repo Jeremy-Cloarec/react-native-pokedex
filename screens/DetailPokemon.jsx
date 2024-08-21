@@ -80,9 +80,6 @@ export default function DetailPokemon() {
                     <>
                         {isLoading ? <ActivityIndicator style={styles.loaderStyle} /> :
                             <>
-                                <TouchableOpacity style={styles.buttonModal}>
-                                    <Text>Open modal</Text>
-                                </TouchableOpacity>
                                 <View style={styles.containerImage}>
                                     <Image style={styles.imageCard} source={{ uri: pokemon.image }} />
                                 </View>
