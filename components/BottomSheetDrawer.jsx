@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
     useAnimatedStyle,
@@ -9,7 +9,7 @@ import Animated, {
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 //Max screen height
-const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 320
+const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 100
 
 export function BottomSheetDrawer() {
     // storing the value
@@ -33,7 +33,18 @@ export function BottomSheetDrawer() {
             translateY.value = event.translationY + context.value.y;
             // here we limit the max value of translationY
             translateY.value = Math.max(translateY.value, MAX_TRANSLATE_Y)
-        });
+        })
+        .onEnd(() => {
+            /** 
+                here the onEnd get call when we leave the gesture.
+                you can play along with value to achieve what you 
+            */
+            if (translateY.value < -SCREEN_HEIGHT / 1.6) {
+                translateY.value = MAX_TRANSLATE_Y;
+            } else if (translateY.value > -SCREEN_HEIGHT / 4.5) {
+                translateY.value = 0;
+            }
+        })
 
     const rBottomSheetStyles = useAnimatedStyle(() => {
         return {
@@ -45,10 +56,18 @@ export function BottomSheetDrawer() {
         };
     });
 
+    /** 
+    for now I have used the useEffect for development purpose only
+    later on we will trigger this component to be visible in UI.
+*/
+    useEffect(() => {
+        translateY.value = -SCREEN_HEIGHT / 5;
+    }, []);
+
     return (
         <GestureDetector gesture={gesture}>
             <Animated.View style={[styles.container, rBottomSheetStyles]}>
-                <Text>Hello</Text>
+                <View style= {styles.line}></View>
             </Animated.View>
         </GestureDetector>
     );
@@ -60,6 +79,16 @@ const styles = StyleSheet.create({
         height: SCREEN_HEIGHT,
         backgroundColor: "#6b7694",
         width: "100%",
-        top: SCREEN_HEIGHT / 1.4,
+        top: SCREEN_HEIGHT,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
     },
+    line: {
+        height: 3,
+        backgroundColor: "#ffffff",
+        width: "28%",
+        alignSelf: "center",
+        marginVertical: 20,
+
+    }
 });
