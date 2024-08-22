@@ -90,7 +90,7 @@ const styles = new StyleSheet.create({
 
     bullet: {
         borderWidth: 2,
-        borderColor: 'black',
+        borderColor: '#49454F',
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',

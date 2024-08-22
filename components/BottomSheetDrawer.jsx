@@ -9,7 +9,7 @@ import Animated, {
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 //Max screen height
-const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 100
+const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 70
 //Min screen height
 const START_TRANSLATE_Y = -SCREEN_HEIGHT / 5
 
@@ -78,18 +78,22 @@ const styles = StyleSheet.create({
     container: {
         position: "absolute",
         height: SCREEN_HEIGHT,
-        backgroundColor: "#6b7694",
+        backgroundColor: "white",
         width: "100%",
         top: SCREEN_HEIGHT,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
+        borderColor:"#CCCCCC",
+        borderWidth: 2,
+
     },
     line: {
-        height: 3,
-        backgroundColor: "#ffffff",
+        height: 4,
+        backgroundColor: "#49454F",
         width: "28%",
         alignSelf: "center",
-        marginVertical: 20,
-
+        marginVertical: 16,
+        borderRadius: 5,
+        
     }
 });

@@ -29,7 +29,7 @@ export default function App() {
                         initialRouteName='Pokemons'
                         screenOptions={{
                             tabBarActiveTintColor: '#e91e63',
-                            tabBarInactiveTintColor: 'black',
+                            tabBarInactiveTintColor: '#49454F',
                             tabBarStyle: {
                                 position: 'relative',
                                 bottom: 0,

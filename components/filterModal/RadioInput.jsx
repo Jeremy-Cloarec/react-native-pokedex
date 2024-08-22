@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 
 
-export function RadioInput({ 
-    data, 
+export function RadioInput({
+    data,
     selectedGenerations,
     generationName,
     setGenerationName
@@ -20,7 +20,7 @@ export function RadioInput({
     useEffect(() => {
         removeSelected();
     }, [selectedGenerations])
-    
+
     return (
         <View style={styles.container}>
             {data.map((type, index) => (
@@ -72,7 +72,7 @@ const styles = new StyleSheet.create({
         height: 50,
         width: 50,
         borderWidth: 2,
-        borderColor: 'black',
+        borderColor: '#49454F',
         borderRadius: 50 / 2,
         alignItems: 'center',
         justifyContent: 'center',

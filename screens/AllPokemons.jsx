@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     },
 
     showMoreTexte: {
-        color: "black",
+        color: "#49454F",
     },
 
     containercard: {
