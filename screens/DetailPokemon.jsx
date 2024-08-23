@@ -5,8 +5,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import {BottomSheetDrawer} from '../components/BottomSheetDrawer';
-
+import { BottomSheetDrawer } from '../components/BottomSheetDrawer';
+import { DetailsPokemonDrawer } from '../components/DetailsPokemonDrawer';
 
 export default function DetailPokemon() {
     const [pokemon, setPokemon] = useState({});
@@ -41,6 +41,10 @@ export default function DetailPokemon() {
             fetchOnePokemon(pokemonName);
         }
     }, [pokemonName]);
+
+    useEffect(() => {
+        console.log(pokemon);
+    }, [pokemon]);
 
     useEffect(() => {
         if (pokemon && pokemon.name) {
@@ -99,7 +103,12 @@ export default function DetailPokemon() {
                     </>
                 )}
             </View>
-            <BottomSheetDrawer />
+            <BottomSheetDrawer
+                detailsPokemonDrawer={
+                    <DetailsPokemonDrawer
+                        pokemon={pokemon}
+                    />}
+            />
         </GestureHandlerRootView>
     );
 }
@@ -141,7 +150,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
 
-    buttonModal : {
+    buttonModal: {
         backgroundColor: "#D3D3D3",
         justifyContent: "center",
         alignItems: "center",
@@ -149,7 +158,7 @@ const styles = StyleSheet.create({
         margin: 12,
         padding: 10,
     },
-    
+
 
     iconAdd: {
         backgroundColor: "rgba(0, 0, 0, 0.1)",

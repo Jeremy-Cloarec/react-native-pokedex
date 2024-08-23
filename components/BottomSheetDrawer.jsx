@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-import React, { useCallback, useEffect } from "react";
+import React, { Children, useEffect } from "react";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
     useAnimatedStyle,
@@ -13,7 +13,7 @@ const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 70
 //Min screen height
 const START_TRANSLATE_Y = -SCREEN_HEIGHT / 5
 
-export function BottomSheetDrawer() {
+export function BottomSheetDrawer({detailsPokemonDrawer}) {
     // storing the value
     const translateY = useSharedValue(START_TRANSLATE_Y)
     //storing the last value of translationY and using it onStart
@@ -64,11 +64,11 @@ export function BottomSheetDrawer() {
         });
     })
 
-
     return (
         <GestureDetector gesture={gesture}>
             <Animated.View style={[styles.container, rBottomSheetStyles]}>
                 <View style={styles.line}></View>
+                {detailsPokemonDrawer}
             </Animated.View>
         </GestureDetector>
     );
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
         top: SCREEN_HEIGHT,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        borderColor:"#CCCCCC",
+        borderColor: "#CCCCCC",
         borderWidth: 2,
 
     },
@@ -94,6 +94,6 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         marginVertical: 16,
         borderRadius: 5,
-        
+
     }
 });
