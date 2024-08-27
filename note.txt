@@ -1,0 +1,6 @@
+nidoqueen
+goupix
+enlever voir plus si filtres appliqués
+faire des liens internes vers les filtres
+Afficher les filtres sur la page
+Pop up quand un pokemon est supprimé

@@ -7,11 +7,11 @@ import Animated, {
     withSpring
 } from "react-native-reanimated";
 
-const SCREEN_HEIGHT = Dimensions.get("window").height;
+const SCREEN_HEIGHT = Dimensions.get("window").height ;
 //Max screen height
 const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 70
 //Min screen height
-const START_TRANSLATE_Y = -SCREEN_HEIGHT / 5
+const START_TRANSLATE_Y = -SCREEN_HEIGHT / 5.3
 
 export function BottomSheetDrawer({detailsPokemonDrawer}) {
     // storing the value
@@ -77,7 +77,7 @@ export function BottomSheetDrawer({detailsPokemonDrawer}) {
 const styles = StyleSheet.create({
     container: {
         position: "absolute",
-        height: SCREEN_HEIGHT,
+        height: SCREEN_HEIGHT ,
         backgroundColor: "white",
         width: "100%",
         top: SCREEN_HEIGHT,
@@ -85,8 +85,8 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 20,
         borderColor: "#CCCCCC",
         borderWidth: 2,
-
     },
+    
     line: {
         height: 4,
         backgroundColor: "#49454F",
@@ -94,6 +94,5 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         marginVertical: 16,
         borderRadius: 5,
-
     }
 });
