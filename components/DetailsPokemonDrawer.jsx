@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 export function DetailsPokemonDrawer({ pokemon }) {
 
     const [urlEvolutions, setUrlEvolutions] = useState({});
+    const [urlPreEvolutions, setUrlPreEvolutions] = useState('bb');
 
     async function fetchOneImage(id) {
         try {
@@ -30,6 +31,20 @@ export function DetailsPokemonDrawer({ pokemon }) {
             });
         }
     }, [pokemon]);
+
+    useEffect(() => {
+        if (pokemon && pokemon.apiPreEvolution) {
+            (async () => {
+                const imageUrl = await fetchOneImage(pokemon.apiPreEvolution.pokedexIdd);
+                setUrlPreEvolutions(imageUrl);
+            })();  // Appel de la fonction immédiatement
+        }
+    }, [pokemon]);
+
+    useEffect(() => {
+        console.log(`urlPreEvolutions: ${urlPreEvolutions}`);
+
+    }, [urlPreEvolutions]);
 
     return (
         <ScrollView style={styles.container}>
@@ -69,12 +84,14 @@ export function DetailsPokemonDrawer({ pokemon }) {
                     <View style={styles.line}></View>
 
                     <View style={styles.containerEvolution}>
-                        {pokemon.apiPreEvolution &&
+                        {pokemon.apiPreEvolution.name &&
                             <View>
                                 <Text>Evolution précedente</Text>
                                 <Text>{pokemon.apiPreEvolution.name}</Text>
-                                <Text>{pokemon.apiPreEvolution.pokedexIdd}</Text>
-
+                                <Image
+                                    source={{ uri: urlPreEvolutions }}
+                                    style={styles.imageType}
+                                />
                             </View>
                         }
                         {pokemon.apiEvolutions.length > 0 &&
