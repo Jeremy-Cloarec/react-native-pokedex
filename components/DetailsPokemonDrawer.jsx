@@ -1,10 +1,27 @@
 import { Text, View, StyleSheet, Image, ScrollView } from 'react-native';
 import { useEffect, useState } from 'react';
+import { TouchableOpacity } from 'react-native';
 
 export function DetailsPokemonDrawer({ pokemon }) {
 
     const [urlEvolutions, setUrlEvolutions] = useState({});
     const [urlPreEvolutions, setUrlPreEvolutions] = useState('bb');
+    const [countEvolutions, setCountEvolutions] = useState(0);
+    const [nextEvolution, setNextEvolution] = useState('Evolution suivante');
+
+    useEffect(() => {
+        if (pokemon.apiEvolutions) {
+            pokemon.apiEvolutions.map((pok) => {
+                console.log(`pokemon.apiEvolutions: ${pok.name}`);
+                setCountEvolutions(c => c + 1);
+            })
+        }
+    }, [pokemon]);
+
+    useEffect(() => {
+        console.log(`countEvolutions: ${countEvolutions}`);
+        countEvolutions <= 1 ? setNextEvolution('Evolution suivante') : setNextEvolution('Evolutions suivantes');
+    }, [countEvolutions]);
 
     async function fetchOneImage(id) {
         try {
@@ -35,7 +52,7 @@ export function DetailsPokemonDrawer({ pokemon }) {
     useEffect(() => {
         if (pokemon && pokemon.apiPreEvolution) {
             (async () => {
-                const imageUrl = await fetchOneImage(pokemon.apiPreEvolution.pokedexIdd);
+                const imageUrl = await fetchOneImage(pokemon.apiPreEvolution.pokedexIdd ? pokemon.apiPreEvolution.pokedexIdd : 1);
                 setUrlPreEvolutions(imageUrl);
             })();  // Appel de la fonction immédiatement
         }
@@ -82,34 +99,33 @@ export function DetailsPokemonDrawer({ pokemon }) {
                         </View>
                     </View>
                     <View style={styles.line}></View>
-
                     <View style={styles.containerEvolution}>
                         {pokemon.apiPreEvolution.name &&
-                            <View>
-                                <Text>Evolution précedente</Text>
-                                <Text>{pokemon.apiPreEvolution.name}</Text>
-                                <Image
-                                    source={{ uri: urlPreEvolutions }}
-                                    style={styles.imageType}
-                                />
+                            <View style={styles.evolution}>
+                                <Text style={styles.textEvolution}>Evolution précedente</Text>
+                                <TouchableOpacity style={styles.subEvolution}>
+                                    <Image
+                                        source={{ uri: urlPreEvolutions }}
+                                        style={styles.imageEvolution}
+                                    />
+                                    <Text>{pokemon.apiPreEvolution.name}</Text>
+                                </TouchableOpacity>
                             </View>
                         }
                         {pokemon.apiEvolutions.length > 0 &&
-                            <View >
-                                <Text>Evolution suivante</Text>
-                                {pokemon.apiEvolutions.map((evolution) => (
-                                    <View key={evolution.pokedexId}>
-                                        <Text>{evolution.name}</Text>
-                                        {urlEvolutions[evolution.pokedexId] ? (
+                            <View style={styles.evolution}>
+                                <Text style={styles.textEvolution}>{nextEvolution}</Text>
+                                <View style={styles.postEvolution}>
+                                    {pokemon.apiEvolutions.map((evolution) => (
+                                        <TouchableOpacity key={evolution.pokedexId} style={pokemon.id !== 133 ? styles.subEvolution : styles.subEvolutionEvoli}>
                                             <Image
                                                 source={{ uri: urlEvolutions[evolution.pokedexId] }}
-                                                style={styles.imageType}
+                                                style={styles.imageEvolution}
                                             />
-                                        ) : (
-                                            <Text>Loading...</Text>
-                                        )}
-                                    </View>
-                                ))}
+                                            <Text >{evolution.name}</Text>
+                                        </TouchableOpacity>
+                                    ))}
+                                </View>
                             </View>
                         }
                     </View>
@@ -207,14 +223,45 @@ const styles = StyleSheet.create({
         height: 70,
     },
     containerEvolution: {
-        backgroundColor: 'pink',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         gap: 16,
     },
+    evolution: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 4,
+        flex: 1,
+    },
+    postEvolution: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        gap: 4,
+        flexWrap: 'wrap',
+    },
+    subEvolution: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 2,
+        maxWidth: 180,
+        flex: 1,
+    },
+    subEvolutionEvoli: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 2,
+        maxWidth: 180,
+        width: "20%"
+    },
     textEvolution: {
-        color: "#49454F"
-    }
+        color: "#49454F",
+        fontWeight: 'bold',
+    },
+    imageEvolution: {
+        width: '80%',
+        height: undefined,
+        aspectRatio: 1,
+    },
 })
 

@@ -19,7 +19,6 @@ export default function AllPokemons() {
     const [selectedGenerations, setSelectedGeneration] = useState(false);
     const [generationName, setGenerationName] = useState(null);
     const [typeName, setTypeName] = useState([]);
-    const [searchByFilter, setSearchByFilter] = useState(false);
     const [urlFilter, setUrlFilter] = useState(null);
 
     const handlePokemonPress = (pokemonName) => {

@@ -1,5 +1,5 @@
 nidoqueen
-goupix
+goupix => OK
 enlever voir plus si filtres appliqués
 faire des liens internes vers les filtres
 Afficher les filtres sur la page

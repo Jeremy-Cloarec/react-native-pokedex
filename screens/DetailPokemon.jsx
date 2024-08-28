@@ -20,10 +20,18 @@ export default function DetailPokemon() {
 
     async function fetchOnePokemon(pokemonName) {
         setLoading(true);
+        console.log(pokemonName);
+        if (pokemonName === "Nidoran♀" || pokemonName === "Nidoran" || pokemonName === "Nidoranf") {
+            pokemonName = 29;
+        }
+        if (pokemonName === "Nidoran♂" || pokemonName === "Nidoran" || pokemonName === "Nidoranm") {
+            pokemonName = 32;
+        }
         try {
-            const response = await fetch(
-                `https://pokebuildapi.fr/api/v1/pokemon/${pokemonName}`,
-            );
+            const url = `https://pokebuildapi.fr/api/v1/pokemon/${pokemonName}`;
+
+            console.log(url);
+            const response = await fetch(url);
             const jsonData = await response.json();
             setPokemon(jsonData);
             setError(null);
