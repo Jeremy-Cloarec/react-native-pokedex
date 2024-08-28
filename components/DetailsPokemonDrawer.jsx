@@ -1,6 +1,7 @@
 import { Text, View, StyleSheet, Image, ScrollView } from 'react-native';
 import { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export function DetailsPokemonDrawer({ pokemon }) {
 
@@ -8,6 +9,7 @@ export function DetailsPokemonDrawer({ pokemon }) {
     const [urlPreEvolutions, setUrlPreEvolutions] = useState('bb');
     const [countEvolutions, setCountEvolutions] = useState(0);
     const [nextEvolution, setNextEvolution] = useState('Evolution suivante');
+    const navigation = useNavigation();
 
     useEffect(() => {
         if (pokemon.apiEvolutions) {
@@ -34,6 +36,12 @@ export function DetailsPokemonDrawer({ pokemon }) {
             console.error(error);
             return null;
         }
+    }
+
+    const handlePokemonSearch = (pokemonName) => {
+        navigation.navigate('DetailPokemon', {
+            pokemonName: pokemonName
+        });
     }
 
     useEffect(() => {
@@ -103,7 +111,10 @@ export function DetailsPokemonDrawer({ pokemon }) {
                         {pokemon.apiPreEvolution.name &&
                             <View style={styles.evolution}>
                                 <Text style={styles.textEvolution}>Evolution précedente</Text>
-                                <TouchableOpacity style={styles.subEvolution}>
+                                <TouchableOpacity 
+                                    style={styles.subEvolution}
+                                    onPress={() => handlePokemonSearch(pokemon.apiPreEvolution.name)}
+                                >
                                     <Image
                                         source={{ uri: urlPreEvolutions }}
                                         style={styles.imageEvolution}
@@ -117,7 +128,11 @@ export function DetailsPokemonDrawer({ pokemon }) {
                                 <Text style={styles.textEvolution}>{nextEvolution}</Text>
                                 <View style={styles.postEvolution}>
                                     {pokemon.apiEvolutions.map((evolution) => (
-                                        <TouchableOpacity key={evolution.pokedexId} style={pokemon.id !== 133 ? styles.subEvolution : styles.subEvolutionEvoli}>
+                                        <TouchableOpacity
+                                            key={evolution.pokedexId}
+                                            style={pokemon.id !== 133 ? styles.subEvolution : styles.subEvolutionEvoli}
+                                            onPress={() => handlePokemonSearch(evolution.name)}
+                                        >
                                             <Image
                                                 source={{ uri: urlEvolutions[evolution.pokedexId] }}
                                                 style={styles.imageEvolution}

@@ -29,8 +29,6 @@ export default function DetailPokemon() {
         }
         try {
             const url = `https://pokebuildapi.fr/api/v1/pokemon/${pokemonName}`;
-
-            console.log(url);
             const response = await fetch(url);
             const jsonData = await response.json();
             setPokemon(jsonData);
@@ -64,16 +62,26 @@ export default function DetailPokemon() {
     }, [pokemon]);
 
     const checkExistingPokemon = async () => {
+        if (!pokemon.name) {
+            return;
+        }
         try {
             const value = await AsyncStorage.getItem(pokemon.name);
             if (value !== null) {
                 setMessagePokemon(`Bravo ! ${pokemon.name} est bien dans votre pokedex !`);
                 setCheckAdd(true);
+            } else {
+                setMessagePokemon("Ajouter au pokedex");
+                setCheckAdd(false);
             }
         } catch (error) {
             console.log("error", error);
         }
     }
+
+    useEffect(() => {
+        checkExistingPokemon();
+    }, [pokemon]);
 
     const mergePokemon = async () => {
         try {
