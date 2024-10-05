@@ -71,7 +71,7 @@ export default function DetailPokemon() {
                 setMessagePokemon(`Bravo ! ${pokemon.name} est bien dans votre pokedex !`);
                 setCheckAdd(true);
             } else {
-                setMessagePokemon("Ajouter au pokedex");
+                setMessagePokemon(`Attraper ${pokemon.name}`);
                 setCheckAdd(false);
             }
         } catch (error) {
@@ -106,11 +106,7 @@ export default function DetailPokemon() {
                                 <View style={styles.containerPressable}>
                                     {!checkAdd ? (
                                         <Pressable style={styles.containerIcon} onPress={mergePokemon}>
-                                            <Ionicons
-                                                style={styles.iconAdd}
-                                                name="add"
-                                                size={52}
-                                                color="#191616" />
+                                            <Image source={require('../assets/pokeball.png')} style={styles.imagePokeball} />
                                         </Pressable>) : (<></>)}
                                     <Text style={styles.containerMessage}>{messagAddPokemon}</Text>
                                 </View>
@@ -154,7 +150,8 @@ const styles = StyleSheet.create({
     containerPressable: {
         flex: 1,
         alignContent: "center",
-        gap: 8,
+        gap: 0,
+        marginBottom: 60,
     },
 
     containerIcon: {
@@ -163,7 +160,15 @@ const styles = StyleSheet.create({
 
     containerMessage: {
         alignItems: "center",
-        textAlign: 'center'
+        textAlign: 'center',
+        height: 50,
+        justifyContent: "center",
+        lineHeight: 50,
+    },
+
+    imagePokeball: {
+        height: 80,
+        width: 80,
     },
 
     buttonModal: {
@@ -173,13 +178,5 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         margin: 12,
         padding: 10,
-    },
-
-
-    iconAdd: {
-        backgroundColor: "rgba(0, 0, 0, 0.1)",
-        paddingVertical: 6,
-        paddingHorizontal: 10,
-        borderRadius: 20,
     },
 })

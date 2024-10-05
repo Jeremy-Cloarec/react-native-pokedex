@@ -10,31 +10,33 @@ export default function Pokedex() {
     const navigation = useNavigation();
     const [values, setValues] = useState([]);
     const [keys, setKeys] = useState([]);
-    const translateX = new Animated.Value(0);
+    const [translateXValues, setTranslateXValues] = useState([]);
 
-    const panResponder = PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
-        onMoveShouldSetPanResponder: () => true,
-        onPanResponderMove: (_, gestureState) => {
-            if (gestureState.dx < 0) {
-                translateX.setValue(gestureState.dx);
-            }
-        },
-        onPanResponderRelease: (_, gestureState) => {
-            if (gestureState.dx < -50) {
-                console.log("delete");
-                Animated.spring(translateX, {
-                    toValue: -100,
-                    useNativeDriver: true
-                }).start();
-            } else {
-                Animated.spring(translateX, {
-                    toValue: 0,
-                    useNativeDriver: true
-                }).start();
-            }
-        },
-    });
+    const createPanResponder = (index) => {
+        return PanResponder.create({
+            onStartShouldSetPanResponder: () => true,
+            onMoveShouldSetPanResponder: () => true,
+            onPanResponderMove: (_, gestureState) => {
+                if (gestureState.dx < 0) {
+                    translateXValues[index].setValue(gestureState.dx);
+                }
+            },
+            onPanResponderRelease: (_, gestureState) => {
+                if (gestureState.dx < -50) {
+                    console.log("delete");
+                    Animated.spring(translateXValues[index], {
+                        toValue: -100,
+                        useNativeDriver: true
+                    }).start();
+                } else {
+                    Animated.spring(translateXValues[index], {
+                        toValue: 0,
+                        useNativeDriver: true
+                    }).start();
+                }
+            },
+        });
+    };
 
     const getIdsPokemons = useCallback(async () => {
         try {
@@ -54,6 +56,8 @@ export default function Pokedex() {
                 .map((item) => JSON.parse(item[1]));
 
             setValues(parsedValues);
+            // Initialiser les valeurs animées pour chaque Pokémon
+            setTranslateXValues(parsedValues.map(() => new Animated.Value(0)));
         } catch (error) {
             console.error("Error", error);
         }
@@ -73,6 +77,7 @@ export default function Pokedex() {
         try {
             await AsyncStorage.clear();
             setValues([]);
+            setTranslateXValues([]); // Réinitialiser les valeurs animées
         } catch (error) {
             console.error("Error", error);
         }
@@ -91,11 +96,10 @@ export default function Pokedex() {
         navigation.navigate('DetailPokemon', {
             pokemonName: pokemonName
         });
-    }
+    };
 
     return (
         <ScrollView style={[{
-            flex: 1,
             flex: 1,
             paddingTop: insets.top,
             paddingBottom: insets.bottom,
@@ -103,20 +107,30 @@ export default function Pokedex() {
             paddingRight: insets.right,
         }, styles.containerAllPokemons]}>
             {values.length === 0 ? (
-                <Text>Vous n'avez pas encore de pokemon dans votre pokedex</Text>
+                <View style={styles.containerNoPokemon}>
+                    <Text style={styles.textNoPokemon}>Vous n'avez pas encore de pokemon dans votre pokedex</Text>
+                </View>
+
             ) : (
                 <>
                     <View style={styles.containerCard}>
                         <Text style={styles.textTitle}>Pokedex</Text>
                         <Text style={styles.subTextTitle}>Vous avez {values.length} pokemons dans votre pokedex</Text>
-                        {values.map(pokemon => {
+                        {values.map((pokemon, index) => {
+
+                            const translateX = translateXValues[index]; // Récupère la valeur animée
+
+                            if (!translateX) {
+                                return null; // Ou un composant de remplacement
+                            }
+
                             return (
                                 <View key={pokemon.id} style={styles.card}>
                                     <Animated.View style={{
                                         flex: 1,
-                                        transform: [{ translateX: translateX }]
+                                        transform: [{ translateX: translateXValues[index] }]
                                     }}>
-                                        <View style={styles.cardText}  {...panResponder.panHandlers}>
+                                        <View style={styles.cardText} {...createPanResponder(index).panHandlers}>
                                             <TouchableOpacity
                                                 style={styles.imagePoke}
                                                 onPress={() => handlePokemonSearch(pokemon.name)}
@@ -135,23 +149,21 @@ export default function Pokedex() {
                                                 </View>
                                             </View>
                                             <Pressable style={styles.deletePokemon} onPress={() => clearOne(pokemon.name)}>
-                                                <Text style={styles.textDeletePokemon}>❌</Text>
+                                                <Image source={require('../assets/lock.png')} style={styles.imageLock} />
+                                                <Text style={styles.textDeletePokemon}>Relacher</Text>
                                             </Pressable>
                                         </View>
                                     </Animated.View>
                                 </View>
-
-
                             );
                         })}
                     </View>
                     <Pressable onPress={clearAll} style={styles.buttonClear}>
-                        <Text style={styles.textButtonClear}>Relacher tous les pokemons</Text>
+                        <Text style={styles.textButtonClear}>Relâcher tous les pokémons</Text>
                     </Pressable>
                 </>
-            )
-            }
-        </ScrollView >
+            )}
+        </ScrollView>
     );
 }
 
@@ -159,6 +171,17 @@ const styles = StyleSheet.create({
     containerAllPokemons: {
         paddingVertical: 18,
         paddingHorizontal: 10,
+    },
+    containerNoPokemon: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        paddingTop: 60
+    },
+    textNoPokemon: {
+        fontSize: 16,
+        textAlign: "center",
+        marginTop: 12,
     },
     textTitle: {
         fontSize: 24,
@@ -177,15 +200,21 @@ const styles = StyleSheet.create({
         marginHorizontal: 12,
     },
     deletePokemon: {
-        backgroundColor: "#EBB4C7",
         minHeight: "100%",
         alignItems: "center",
         justifyContent: "center",
         position: "absolute",
-        right: -100
+        right: -100,
+        borderRadius: 8,
+        paddingRight: 20,
+        gap: 4,
     },
     textDeletePokemon: {
-        fontSize: 24,
+        fontSize: 16,
+    },
+    imageLock: {
+        width: 52,
+        height: 52,
     },
     card: {
         backgroundColor: "rgba(255, 255, 255, 0.8)",
@@ -202,16 +231,9 @@ const styles = StyleSheet.create({
         gap: 8,
         alignItems: "center",
     },
-    containerImage: {
-        width: "100%",
-    },
-    imagePoke: {
-        backgroundColor: "green",
-    },
     containerText: {
         gap: 6,
         flex: 1,
-        backgroundColor: "red",
     },
     containerTypes: {
         flexDirection: "row",
