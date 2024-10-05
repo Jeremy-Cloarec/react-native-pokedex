@@ -1,7 +1,6 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, Pressable, ActivityIndicator, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Image, Pressable, ActivityIndicator } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -96,7 +95,7 @@ export default function DetailPokemon() {
     return (
         <GestureHandlerRootView>
             <View style={styles.containerDetail}>
-                {error ? <Text>{error}</Text> : (
+                {error ? <Text style={styles.errorText}>{error}</Text> : (
                     <>
                         {isLoading ? <ActivityIndicator style={styles.loaderStyle} /> :
                             <>
@@ -135,6 +134,12 @@ const styles = StyleSheet.create({
 
     containerDetail: {
         flex: 1,
+    },
+
+    errorText: {
+        fontSize: 20,
+        paddingHorizontal: 12,
+        paddingVertical: 50,
     },
 
     containerImage: {

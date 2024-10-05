@@ -1,11 +1,17 @@
 import React, { useState } from "react";
-import { TextInput, StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { InputSearch } from "./InputSearch";
 import { Icon } from "../Icon";
 
 export function InputSearchPokemons({ text, onChangeText, handleInputPressed }) {
+    const [isFocused, setIsFocused] = useState(false);
+
+
     return (
-        <View style={styles.containerSearch}>
+        <View style={[
+            styles.containerSearch,
+            isFocused ? styles.containerSearchFocused : null
+        ]}>
             <Icon
                 source={require('../../assets/search.png')}
                 style={styles.searchIcon}
@@ -15,6 +21,8 @@ export function InputSearchPokemons({ text, onChangeText, handleInputPressed }) 
                 onChangeText={onChangeText}
                 handleInputPressed={handleInputPressed}
                 value={text}
+                isFocused={isFocused}
+                setIsFocused={setIsFocused}
             />
         </View>
     );
@@ -33,6 +41,11 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         gap: 12,
         flex: 1,
+    },
+
+    containerSearchFocused: {
+        borderColor: '#E91E63',
+        borderWidth: 1,
     },
 
     searchIcon: {

@@ -29,19 +29,20 @@ export default function App() {
                         initialRouteName='Pokemons'
                         screenOptions={{
                             tabBarActiveTintColor: '#e91e63',
-                            tabBarInactiveTintColor: '#49454F',
+                            tabBarInactiveTintColor: 'white',
                             tabBarStyle: {
                                 position: 'relative',
                                 bottom: 0,
                                 maxWidth: '100%',
                                 height: 60,
-                                backgroundColor: 'rgba(255, 255, 255, 1)',
+                                backgroundColor: '#151515',
                                 flexDirection: 'row',
                                 justifyContent: 'space-around',
                                 alignItems: 'center',
                             },
                             tabBarLabelStyle: {
-                                fontSize: 16,
+                                fontSize: 18
+                                ,
                                 fontWeight: 'bold',
                             },
                         }

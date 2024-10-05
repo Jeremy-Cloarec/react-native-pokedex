@@ -20,12 +20,16 @@ export default function AllPokemons() {
     const [generationName, setGenerationName] = useState(null);
     const [typeName, setTypeName] = useState([]);
     const [urlFilter, setUrlFilter] = useState(null);
+    const [isFilterApplied, setIsFilterApplied] = useState(false);
 
     const handlePokemonPress = (pokemonName) => {
         navigation.navigate('DetailPokemon', { pokemonName });
     };
 
     const handlePokemonSearch = (pokemonName) => {
+        if (!pokemonName) {
+            return;
+        }
         navigation.navigate('DetailPokemon', {
             pokemonName: pokemonName
         });
@@ -37,8 +41,6 @@ export default function AllPokemons() {
 
     const closeModalFilter = () => {
         setModalVisible(false)
-        // setSelectedTypes(true);
-        // setSelectedGeneration(false);
     }
 
     const showMore = () => {
@@ -69,6 +71,7 @@ export default function AllPokemons() {
     const applyFilter = () => {
         if (!generationName && typeName.length === 0) {
             console.log('Aucun filtre appliqué');
+            setIsFilterApplied(false);
             closeModalFilter();
             return;
         }
@@ -116,6 +119,8 @@ export default function AllPokemons() {
             console.error(error);
         } finally {
             console.log('Filtre appliqué');
+            setIsFilterApplied(true);
+
             setLoading(false);
         }
     }
@@ -158,14 +163,6 @@ export default function AllPokemons() {
                             showModalFilter={showModalFilter}
                         />
                     </View>
-                    {/* {typeName.length !== 0 && urlFilter && (
-                        <View>
-                            <Text>Type sélectionné :</Text>
-                            {typeName.map((type, index) => (
-                                <Text key={index}>{type}</Text>
-                            ))}
-                        </View>
-                    )} */}
                     <View style={styles.containerAll}>
                         {data.map((item) => (
                             <Pressable key={item.id} onPress={() => handlePokemonPress(item.name)} style={styles.containercard}>
@@ -179,10 +176,14 @@ export default function AllPokemons() {
                         {numberItem >= 10 && isLoading ? (
                             <ActivityIndicator style={styles.loaderStyle} />
                         ) : (
-                            <ButtonAfterList
-                                text={messageFetchMore}
-                                onPress={showMore}
-                            />
+                            !isFilterApplied ? (
+                                <View style={styles.containerButton}>
+                                    <ButtonAfterList
+                                        text={messageFetchMore}
+                                        onPress={showMore}
+                                    />
+                                </View>
+                            ) : ("")
                         )}
                     </View>
                 </>
@@ -217,6 +218,13 @@ const styles = StyleSheet.create({
 
     showMoreTexte: {
         color: "#49454F",
+    },
+
+    containerButton: {
+        marginHorizontal: 12,
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
     },
 
     containercard: {
