@@ -1,13 +1,13 @@
-import { Pressable, View, Text, Image, StyleSheet } from "react-native"
+import { TouchableOpacity, View, Text, Image, StyleSheet } from "react-native"
 
-export default function PokemonCard({ item, handlePokemonPress  }) {
+export function PokemonCard({ item, handlePokemonPress }) {
     return (
-        <Pressable key={item.id} onPress={() => handlePokemonPress(item.name)} style={styles.containercard}>
+        <TouchableOpacity onPress={() => handlePokemonPress(item.name)} style={styles.containercard}>
             <View style={styles.containerImage}>
                 <Image style={styles.imageCard} source={{ uri: item.image }} />
             </View>
             <Text style={styles.textCard}>{item.name}</Text>
-        </Pressable>
+        </TouchableOpacity>
     )
 }
 
