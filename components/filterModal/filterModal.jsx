@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Modal, View, Text, StyleSheet, Pressable, Image, TouchableOpacity } from "react-native"
+import { Modal, View, Text, StyleSheet, Pressable, Image, TouchableOpacity, ScrollView } from "react-native"
 import { ChooseFilter } from "./ChooseFilter";
 import { CheckboxInput } from "./CheckboxInput";
 import { RadioInput } from "./RadioInput";
 import { dataTypes } from "../../data/dataTypes";
 import { dataGenerations } from "../../data/dataGenerations";
 import { ButtonModal } from "./ButtonModal";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
 export function FilterModal({
@@ -23,8 +24,10 @@ export function FilterModal({
     applyFilter,
     resetFilter
 }) {
+    const insets = useSafeAreaInsets();
     return (
         <View>
+
             <Modal
                 visible={modalVisible}
                 onRequestClose={() => {
@@ -32,60 +35,67 @@ export function FilterModal({
                 }}
                 animationType="slide"
                 transparent={true}
+
             >
                 <View style={styles.containerModal}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.header}>
-                            <Text style={styles.headerTitle}>Filtres</Text>
-                            <TouchableOpacity
-                                onPress={closeModalFilter}>
-                                <Image
-                                    source={require('../../assets/close.png')}
-                                    style={styles.close}
-                                />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.body}>
-                            <ChooseFilter
-                                types={<CheckboxInput
-                                    data={dataTypes}
-                                    selectedTypes={selectedTypes}
-                                    typeName={typeName}
-                                    setTypeName={setTypeName}
+                    <View style={styles.scrollViewWrapper}>
 
-                                />}
-                                generation={<RadioInput
-                                    data={dataGenerations}
-                                    selectedGenerations={selectedGenerations}
-                                    generationName={generationName}
-                                    setGenerationName={setGenerationName}
-                                />}
-                                handleType={handleType}
-                                handleGeneration={handleGeneration}
-                                selectedGenerations={selectedGenerations}
-                                selectedTypes={selectedTypes}
-                            />
-                        </View>
-                        <TouchableOpacity
-                            onPress={resetFilter}
-                            style={styles.resetContainer}
-                        >
-                            <Image
-                                source={require('../../assets/reset.png')}
-                                style={styles.restIcon}
-                            />
-                            <Text style={styles.reset}>
-                                Effacer les filtres
-                            </Text>
-                        </TouchableOpacity>
-                        <ButtonModal
-                            text={'Appliquer les filtres'}
-                            onPress={applyFilter}
-                        />
+
+                        <ScrollView style={styles.containerScroll}>
+                            <View style={styles.centeredView}>
+                                <View style={styles.header}>
+                                    <Text style={styles.headerTitle}>Filtres</Text>
+                                    <TouchableOpacity
+                                        onPress={closeModalFilter}>
+                                        <Image
+                                            source={require('../../assets/close.png')}
+                                            style={styles.close}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={styles.body}>
+                                    <ChooseFilter
+                                        types={<CheckboxInput
+                                            data={dataTypes}
+                                            selectedTypes={selectedTypes}
+                                            typeName={typeName}
+                                            setTypeName={setTypeName}
+                                        />}
+                                        generation={<RadioInput
+                                            data={dataGenerations}
+                                            selectedGenerations={selectedGenerations}
+                                            generationName={generationName}
+                                            setGenerationName={setGenerationName}
+                                        />}
+                                        handleType={handleType}
+                                        handleGeneration={handleGeneration}
+                                        selectedGenerations={selectedGenerations}
+                                        selectedTypes={selectedTypes}
+                                    />
+                                </View>
+
+                                <TouchableOpacity
+                                    onPress={resetFilter}
+                                    style={styles.resetContainer}
+                                >
+                                    <Image
+                                        source={require('../../assets/reset.png')}
+                                        style={styles.restIcon}
+                                    />
+                                    <Text style={styles.reset}>
+                                        Effacer les filtres
+                                    </Text>
+                                </TouchableOpacity>
+                                <ButtonModal
+                                    text={'Appliquer les filtres'}
+                                    onPress={applyFilter}
+                                />
+                            </View>
+                        </ScrollView>
                     </View>
                 </View>
-            </Modal>
-        </View>
+            </Modal >
+        </View >
     )
 }
 
@@ -95,18 +105,29 @@ const styles = new StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 32,
+        paddingHorizontal: 12,
+        paddingTop: 24,
+        paddingBottom: 80,
+        maxHeight: '100%',
+    },
+    containerScroll: {
+        borderRadius: 12,
+        borderRadius: 12,
     },
 
+    scrollViewWrapper: {
+        borderRadius: 12,
+        overflow: 'hidden',
+        flex: 1,
+        width: '100%',
+    },
     centeredView: {
         borderRadius: 12,
-        backgroundColor: 'white',
         padding: 12,
         minWidth: '40%',
         gap: 24,
         backgroundColor: '#EDEDED',
     },
-
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
