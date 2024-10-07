@@ -7,7 +7,7 @@ import { InputSearchPokemons } from '../components/searchBar/InputSearchPokemons
 import { ButtonAfterList } from '../components/ButtonAfterList';
 import Filter from '../components/filterModal/Filter';
 import { FilterModal } from '../components/filterModal/filterModal';
-
+import PokemonCard from '../components/pokemonCard';
 export default function AllPokemons() {
     const [namePokemon, setNamePokemon] = useState('');
     const insets = useSafeAreaInsets();
@@ -163,12 +163,10 @@ export default function AllPokemons() {
                     </View>
                     <View style={styles.containerAll}>
                         {data.map((item) => (
-                            <Pressable key={item.id} onPress={() => handlePokemonPress(item.name)} style={styles.containercard}>
-                                <View style={styles.containerImage}>
-                                    <Image style={styles.imageCard} source={{ uri: item.image }} />
-                                </View>
-                                <Text style={styles.textCard}>{item.name}</Text>
-                            </Pressable>
+                            <PokemonCard
+                                item={item}
+                                handlePokemonPress={handlePokemonPress}
+                            />
                         ))
                         }
                         {numberItem >= 10 && isLoading ? (
@@ -224,34 +222,4 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         width: "100%",
     },
-
-    containercard: {
-        backgroundColor: "rgba(255, 255, 255, 0.8)",
-        margin: 8,
-        alignItems: "center",
-        justifyContent: "center",
-        flex: 1,
-        minWidth: '40%',
-        borderRadius: 18,
-        gap: 8,
-        padding: 6,
-    },
-
-    containerImage: {
-        width: "100%",
-    },
-
-    textCard: {
-        fontWeight: "600",
-    },
-
-    imageCard: {
-        height: 130,
-        borderRadius: 10,
-        padding: 10,
-        resizeMode: "contain",
-        width: "100%",
-        maxWidth: "100%",
-        minWidth: "100%",
-    }
 })
