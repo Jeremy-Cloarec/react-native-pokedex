@@ -19,9 +19,12 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         flex: 1,
         minWidth: '40%',
+        maxWidth: '47%',
+        maxHeight: 200,
         borderRadius: 18,
         gap: 8,
         padding: 6,
+
     },
     containerImage: {
         width: '100%',

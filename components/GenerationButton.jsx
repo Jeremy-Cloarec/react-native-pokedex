@@ -12,7 +12,7 @@ export function GenerationButton({ generationNumber, clearGeneration }) {
                     source={require('../assets/closeFilterButton.png')}
                     style={styles.icon}
                 />
-                <Text>
+                <Text style={styles.textButton}>
                     Génération {generationNumber}
                 </Text>
             </TouchableOpacity>
