@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Modal, View, Text, StyleSheet, Pressable, Image, TouchableOpacity, ScrollView } from "react-native"
+import { Modal, View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native"
 import { ChooseFilter } from "./ChooseFilter";
 import { CheckboxInput } from "./CheckboxInput";
 import { RadioInput } from "./RadioInput";
@@ -39,8 +38,6 @@ export function FilterModal({
             >
                 <View style={styles.containerModal}>
                     <View style={styles.scrollViewWrapper}>
-
-
                         <ScrollView style={styles.containerScroll}>
                             <View style={styles.centeredView}>
                                 <View style={styles.header}>

@@ -95,7 +95,6 @@ export default function AllPokemons() {
     useEffect(() => {
         if (urlFilter) {
             console.log('urlFilter', urlFilter);
-
             fetchFilterdata();
         }
     }, [urlFilter]);
@@ -120,7 +119,6 @@ export default function AllPokemons() {
         } finally {
             console.log('Filtre appliqué');
             setIsFilterApplied(true);
-
             setLoading(false);
         }
     }

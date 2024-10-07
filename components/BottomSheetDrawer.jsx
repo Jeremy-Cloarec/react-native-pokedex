@@ -9,9 +9,9 @@ import Animated, {
 
 const SCREEN_HEIGHT = Dimensions.get("window").height ;
 //Max screen height
-const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 70
+const MAX_TRANSLATE_Y = -SCREEN_HEIGHT 
 //Min screen height
-const START_TRANSLATE_Y = -SCREEN_HEIGHT / 5.3
+const START_TRANSLATE_Y = -SCREEN_HEIGHT / 4.2
 
 export function BottomSheetDrawer({detailsPokemonDrawer}) {
     // storing the value
@@ -81,8 +81,6 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         width: "100%",
         top: SCREEN_HEIGHT,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
         borderColor: "#CCCCCC",
         borderWidth: 2,
     },
