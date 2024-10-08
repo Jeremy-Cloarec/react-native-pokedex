@@ -7,7 +7,7 @@ import { InputSearchPokemons } from '../components/searchBar/InputSearchPokemons
 import { ButtonAfterList } from '../components/ButtonAfterList';
 import Filter from '../components/filterModal/Filter';
 import { FilterModal } from '../components/filterModal/filterModal';
-import { PokemonCard } from '../components/PokemonCard';
+import {PokemonCard}  from '../components/PokemonCard';
 import { FilterButton } from '../components/FilterButton';
 import { GenerationButton } from '../components/GenerationButton';
 
